@@ -1,13 +1,14 @@
 package com.example.restulator.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // This model is used to map the api responses
 // to get the relevant data.
-public class ApiResponse {
-    public Boolean status;
-    public List<Table> data;
-    public String message;
+public class ApiResponse<T> {
+    private Boolean status;
+    private ArrayList<T> data;
+    private String message;
 
 
     public void setStatus(Boolean status) {
@@ -18,7 +19,7 @@ public class ApiResponse {
         return status;
     }
 
-    public List<Table> getData() {
+    public ArrayList<T> getData() {
         return data;
     }
 
@@ -26,7 +27,7 @@ public class ApiResponse {
         return message;
     }
 
-    public void setData(List<Table> data) {
+    public void setData(ArrayList<T> data) {
         this.data = data;
     }
 
