@@ -1,6 +1,8 @@
 package com.example.restulator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     // Retrofit Instance object declaration.
     RestulatorAPI apiInterface;
     RelativeLayout progressBar;
+    GridLayoutManager layoutManager;
+    RecyclerView recyclerView;
+    Table[] tablesData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progressBar = findViewById(R.id.progress_bar);
+        layoutManager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+        recyclerView = findViewById(R.id.recycler_view_tables);
+        recyclerView.setLayoutManager(layoutManager);
 
 
         // Creating retrofit instance to call the getTables() method.
@@ -46,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ApiResponse<Table>> call, Response<ApiResponse<Table>> response) {
 
+
+                // Checking api response status.
                 if(response.body() != null ? response.body().getStatus() : false){
-                    // Checking api response status.
-                    ArrayList<Table> tableList = response.body().getData();
+                    tablesData = response.body().getData();
 
                     progressBar.setVisibility(View.INVISIBLE);
 
+                    recyclerView.setAdapter(new TablesScreenAdapter(getApplicationContext(), tablesData));
                 }
 
             }

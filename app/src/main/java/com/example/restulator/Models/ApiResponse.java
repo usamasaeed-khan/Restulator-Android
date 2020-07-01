@@ -7,7 +7,7 @@ import java.util.List;
 // to get the relevant data.
 public class ApiResponse<T> {
     private Boolean status;
-    private ArrayList<T> data;
+    private T[] data;
     private String message;
 
 
@@ -19,7 +19,7 @@ public class ApiResponse<T> {
         return status;
     }
 
-    public ArrayList<T> getData() {
+    public T[] getData() {
         return data;
     }
 
@@ -27,7 +27,7 @@ public class ApiResponse<T> {
         return message;
     }
 
-    public void setData(ArrayList<T> data) {
+    public void setData(T[] data) {
         this.data = data;
     }
 
