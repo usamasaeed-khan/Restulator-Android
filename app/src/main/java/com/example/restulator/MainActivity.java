@@ -1,24 +1,17 @@
 package com.example.restulator;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActionBar;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.Table;
-
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ApiResponse<Table>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Table>> call, Response<ApiResponse<Table>> response) {
+            public void onResponse(@NonNull Call<ApiResponse<Table>> call,@NonNull Response<ApiResponse<Table>> response) {
 
 
                 // Checking api response status.
@@ -67,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<Table>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ApiResponse<Table>> call,@NonNull Throwable t) {
 
                 // If incomplete, toast the error message.
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
