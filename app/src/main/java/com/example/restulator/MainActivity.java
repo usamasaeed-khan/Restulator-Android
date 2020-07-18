@@ -1,6 +1,7 @@
 package com.example.restulator;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -46,9 +47,16 @@ public class MainActivity extends AppCompatActivity {
         // Creating retrofit instance to call the getTables() method.
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
 
+
+        // Access the token from the shared preference.
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String access_token = pref.getString("ACCESS_TOKEN", null);
+        //Toast.makeText(this, access_token, Toast.LENGTH_LONG).show();
+
         // Initialize call to the api method getTables()
         Intent intent = getIntent();
-        String access_token = intent.getStringExtra("ACCESS_TOKEN");
+        access_token = intent.getStringExtra("ACCESS_TOKEN");
+        //Toast.makeText(this, access_token, Toast.LENGTH_LONG).show();
         Call<ApiResponse<Table>> call = apiInterface.getTables(access_token);
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ApiResponse<Table>>() {

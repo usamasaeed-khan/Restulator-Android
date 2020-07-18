@@ -16,7 +16,7 @@ public interface RestulatorAPI {
     @POST("user/")
     Call<ApiResponse<Waiter>> waiterLogin(@Body User user);
 
-    // send a GET request to local:3000/api/tables/
+    // send a GET request to localhost:3000/api/tables/
     @GET("tables/all")
     Call<ApiResponse<Table>> getTables(
             @Header("authorization") String authorization

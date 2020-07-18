@@ -7,6 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -50,6 +51,20 @@ public class LoginActivity extends AppCompatActivity {
 
                          if(obj.getRole().equals("waiter") || obj.getRole().equals("Waiter") ){
                              Toast.makeText(getApplicationContext(), "Login Successful "  ,Toast.LENGTH_LONG).show();
+
+
+                             Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+
+                             // Initializing Shared Preferences obj.
+
+                             // 1st argument is the file name and 2nd arg is the access mode, 0 is for private mode to be
+                             // accessed only by the application.
+                             SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                             SharedPreferences.Editor editor = pref.edit();
+                             editor.putString("ACCESS_TOKEN", obj.getToken());
+                             editor.apply(); // commit and save changes
+
+
 
                              Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                              intent.putExtra("ACCESS_TOKEN", obj.getToken());
