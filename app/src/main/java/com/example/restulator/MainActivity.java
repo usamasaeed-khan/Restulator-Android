@@ -1,5 +1,6 @@
 package com.example.restulator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -13,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.Table;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
 
         // Initialize call to the api method getTables()
-        Call<ApiResponse<Table>> call = apiInterface.getTables();
+        Intent intent = getIntent();
+        String access_token = intent.getStringExtra("ACCESS_TOKEN");
+        Call<ApiResponse<Table>> call = apiInterface.getTables(access_token);
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ApiResponse<Table>>() {
             @Override
@@ -55,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
 
                     recyclerView.setAdapter(new TablesScreenAdapter(getApplicationContext(), tablesData));
-                }
+
+               }
 
             }
 

@@ -8,16 +8,21 @@ import com.example.restulator.Models.Waiter;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface RestulatorAPI {
-
-    // send a GET request to local:3000/api/tables/all
-    @GET("tables/all")
-    Call<ApiResponse<Table>> getTables();
-
     @POST("user/")
     Call<ApiResponse<Waiter>> waiterLogin(@Body User user);
+
+    // send a GET request to local:3000/api/tables/
+    @GET("tables/all")
+    Call<ApiResponse<Table>> getTables(
+            @Header("authorization") String authorization
+    );
+
+
 
 
 

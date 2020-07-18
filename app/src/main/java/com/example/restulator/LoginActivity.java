@@ -48,14 +48,16 @@ public class LoginActivity extends AppCompatActivity {
                     if(response.body() != null ? response.body().getStatus() : false){
                          obj = response.body().getData()[0];
 
-                         if(obj.getRole() == "waiter" ||obj.getRole() == "Waiter"  ){
-                             Toast.makeText(getApplicationContext(), "Login Successful " + obj.getId() + " id Email:" + obj.getEmail() ,Toast.LENGTH_LONG).show();
+                         if(obj.getRole().equals("waiter") || obj.getRole().equals("Waiter") ){
+                             Toast.makeText(getApplicationContext(), "Login Successful "  ,Toast.LENGTH_LONG).show();
 
                              Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                             intent.putExtra("ACCESS_TOKEN", obj.getToken());
                              startActivity(intent);
                          }
                          else{
-                             Toast.makeText(getApplicationContext(), "Login Unsuccessful! Please Enter Registered Waiter Email and Password!",Toast.LENGTH_LONG).show();
+
+                             Toast.makeText(getApplicationContext(), "Login Unsuccessful! Please Enter Registered Waiter Email and Password!" ,Toast.LENGTH_LONG).show();
                          }
 
 
