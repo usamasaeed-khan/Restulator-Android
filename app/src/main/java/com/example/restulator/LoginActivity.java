@@ -25,11 +25,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if(isLoggedIn()){
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
     }
 
     public void login(View view) {
-        EditText emailEditText =findViewById(R.id.loginEmail);
-        String email =emailEditText.getText().toString();
+
+        EditText emailEditText = findViewById(R.id.loginEmail);
+        String email = emailEditText.getText().toString();
 
         EditText pwdEditText =findViewById(R.id.loginPass);
         String password =pwdEditText.getText().toString();
@@ -67,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
                              //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
                              startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                             finish();
                          }
                          else{
 
@@ -95,8 +102,10 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Enter Email and Password!",Toast.LENGTH_LONG).show();
         }
         // Creating retrofit instance to call the getTables() method.
+    }
 
-
-
+    private Boolean isLoggedIn(){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        return pref.getString("ACCESS_TOKEN", null) != null;
     }
 }
