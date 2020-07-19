@@ -3,6 +3,9 @@ package com.example.restulator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -50,14 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Access the token from the shared preference.
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-        String access_token = pref.getString("ACCESS_TOKEN", null);
-        //Toast.makeText(this, access_token, Toast.LENGTH_LONG).show();
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
 
-        // Initialize call to the api method getTables()
-        Intent intent = getIntent();
-        access_token = intent.getStringExtra("ACCESS_TOKEN");
-        //Toast.makeText(this, access_token, Toast.LENGTH_LONG).show();
-        Call<ApiResponse<Table>> call = apiInterface.getTables(access_token);
+        Call<ApiResponse<Table>> call = apiInterface.getTables(accessToken);
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ApiResponse<Table>>() {
             @Override
@@ -85,4 +83,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                Toast.makeText(getApplicationContext(), "Signing Off", Toast.LENGTH_LONG).show();
+
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.apply();
+
+
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.unpaid_orders:
+                startActivity(new Intent(this, UnpaidOrders.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }

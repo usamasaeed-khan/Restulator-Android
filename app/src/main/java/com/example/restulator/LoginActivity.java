@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                              Toast.makeText(getApplicationContext(), "Login Successful "  ,Toast.LENGTH_LONG).show();
 
 
-                             Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+                             //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
 
                              // Initializing Shared Preferences obj.
 
@@ -65,10 +65,8 @@ public class LoginActivity extends AppCompatActivity {
                              editor.apply(); // commit and save changes
 
 
-
-                             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                             intent.putExtra("ACCESS_TOKEN", obj.getToken());
-                             startActivity(intent);
+                             //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
                          }
                          else{
 
