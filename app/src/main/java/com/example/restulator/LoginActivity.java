@@ -7,6 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -24,11 +25,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if(isLoggedIn()){
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
     }
 
     public void login(View view) {
-        EditText emailEditText =findViewById(R.id.loginEmail);
-        String email =emailEditText.getText().toString();
+
+        EditText emailEditText = findViewById(R.id.loginEmail);
+        String email = emailEditText.getText().toString();
 
         EditText pwdEditText =findViewById(R.id.loginPass);
         String password =pwdEditText.getText().toString();
@@ -51,9 +58,22 @@ public class LoginActivity extends AppCompatActivity {
                          if(obj.getRole().equals("waiter") || obj.getRole().equals("Waiter") ){
                              Toast.makeText(getApplicationContext(), "Login Successful "  ,Toast.LENGTH_LONG).show();
 
-                             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                             intent.putExtra("ACCESS_TOKEN", obj.getToken());
-                             startActivity(intent);
+
+                             //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+
+                             // Initializing Shared Preferences obj.
+
+                             // 1st argument is the file name and 2nd arg is the access mode, 0 is for private mode to be
+                             // accessed only by the application.
+                             SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                             SharedPreferences.Editor editor = pref.edit();
+                             editor.putString("ACCESS_TOKEN", obj.getToken());
+                             editor.apply(); // commit and save changes
+
+
+                             //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                             finish();
                          }
                          else{
 
@@ -82,8 +102,10 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Enter Email and Password!",Toast.LENGTH_LONG).show();
         }
         // Creating retrofit instance to call the getTables() method.
+    }
 
-
-
+    private Boolean isLoggedIn(){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        return pref.getString("ACCESS_TOKEN", null) != null;
     }
 }
