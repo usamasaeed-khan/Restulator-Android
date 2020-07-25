@@ -144,15 +144,14 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
             loginTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(pref.getString("LOGIN_AT", null));
+            differenceInMs = Calendar.getInstance().getTime().getTime() - loginTime.getTime();
         }
         catch (ParseException e){
             differenceInMs = 0;
         }
-        differenceInMs = Calendar.getInstance().getTime().getTime() - loginTime.getTime();
 
-        int differenceInHours = (int) ((differenceInMs / (1000*60*60)) % 24);
-
-        return differenceInHours;
+        // convert difference in hours.
+        return (int) ((differenceInMs / (1000*60*60)) % 24);
     }
 
 }
