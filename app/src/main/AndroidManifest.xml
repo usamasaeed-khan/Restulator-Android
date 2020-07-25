@@ -13,11 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddCustomerActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
         <activity android:name=".UnpaidOrders" />
         <activity android:name=".OrderActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".AddCustomerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

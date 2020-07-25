@@ -32,7 +32,7 @@ public class AddCustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_customer);
 
-
+        progressBar = findViewById(R.id.progress_bar);
         Button addCustomerButton = findViewById(R.id.add_customer_btn);
         EditText addCustomerName = findViewById(R.id.add_customer_name);
         EditText addCustomerEmail = findViewById(R.id.add_customer_email);
@@ -71,7 +71,7 @@ public class AddCustomerActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<ApiResponse<MySqlResult>> call, @NonNull Response<ApiResponse<MySqlResult>> response) {
                 // Checking api response status.
                 if(response.body() != null ? response.body().getStatus() : false){
-                    Toast.makeText(getApplicationContext(), response.message(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
 
                 }
