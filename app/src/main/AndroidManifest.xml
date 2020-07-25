@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UnpaidOrders"></activity>
+        <activity android:name=".AddCustomerActivity"></activity>
+        <activity android:name=".UnpaidOrders" />
         <activity android:name=".OrderActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity">

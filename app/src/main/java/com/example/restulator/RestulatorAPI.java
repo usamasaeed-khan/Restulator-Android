@@ -1,6 +1,8 @@
 package com.example.restulator;
 
 import com.example.restulator.Models.ApiResponse;
+import com.example.restulator.Models.Customer;
+import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.Table;
 import com.example.restulator.Models.User;
 import com.example.restulator.Models.Waiter;
@@ -22,7 +24,8 @@ public interface RestulatorAPI {
             @Header("authorization") String authorization
     );
 
-
+    @POST("customer/")
+    Call<ApiResponse<MySqlResult>> addCustomerToDb(@Body Customer customer, @Header("authorization") String authorization);
 
 
 
