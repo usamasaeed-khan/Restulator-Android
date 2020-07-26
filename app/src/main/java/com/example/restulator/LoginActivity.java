@@ -17,6 +17,12 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.User;
 import com.example.restulator.Models.Waiter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class LoginActivity extends AppCompatActivity {
     RestulatorAPI apiInterface;
     Waiter obj;
@@ -37,8 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         EditText emailEditText = findViewById(R.id.loginEmail);
         String email = emailEditText.getText().toString();
 
-        EditText pwdEditText =findViewById(R.id.loginPass);
-        String password =pwdEditText.getText().toString();
+        EditText pwdEditText = findViewById(R.id.loginPass);
+        String password = pwdEditText.getText().toString();
 
         if(!email.matches("") || !password.matches("")){
             User userObj = new User(email,password);
@@ -59,6 +65,20 @@ public class LoginActivity extends AppCompatActivity {
                              Toast.makeText(getApplicationContext(), "Login Successful "  ,Toast.LENGTH_LONG).show();
 
 
+
+                             String pattern = "MM/dd/yyyy HH:mm:ss";
+
+                            // Create an instance of SimpleDateFormat used for formatting
+                            // the string representation of date according to the chosen pattern
+                             DateFormat df = new SimpleDateFormat(pattern);
+
+                            // Get the today date using Calendar object.
+                             Date today = Calendar.getInstance().getTime();
+                            // Using DateFormat format method we can create a string
+                            // representation of a date with the defined format.
+                             String todayAsString = df.format(today);
+
+
                              //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
 
                              // Initializing Shared Preferences obj.
@@ -68,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                              SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
                              SharedPreferences.Editor editor = pref.edit();
                              editor.putString("ACCESS_TOKEN", obj.getToken());
+                             editor.putString("LOGIN_AT", todayAsString);
                              editor.apply(); // commit and save changes
 
 
@@ -104,8 +125,33 @@ public class LoginActivity extends AppCompatActivity {
         // Creating retrofit instance to call the getTables() method.
     }
 
-    private Boolean isLoggedIn(){
+    private Boolean isLoggedIn() {
+
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-        return pref.getString("ACCESS_TOKEN", null) != null;
+
+        return getLoginToken(pref) != null && getLoginTimeDifference(pref) < 1;
+
     }
+
+    private String getLoginToken(SharedPreferences pref){
+        return pref.getString("ACCESS_TOKEN", null);
+    }
+
+
+    private int getLoginTimeDifference(SharedPreferences pref){
+        Date loginTime = null;
+        long differenceInMs;
+
+        try {
+            loginTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(pref.getString("LOGIN_AT", null));
+            differenceInMs = Calendar.getInstance().getTime().getTime() - loginTime.getTime();
+        }
+        catch (ParseException e){
+            differenceInMs = 0;
+        }
+
+        // convert difference in hours.
+        return (int) ((differenceInMs / (1000*60*60)) % 24);
+    }
+
 }
