@@ -80,6 +80,15 @@ public class MainActivity extends AppCompatActivity {
                 // If incomplete, toast the error message.
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);
+//                Toast.makeText(getApplicationContext(), "Signing Off", Toast.LENGTH_LONG).show();
+
+                // Deleting all shared preferences data for the current user to logout.
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.apply();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
     }

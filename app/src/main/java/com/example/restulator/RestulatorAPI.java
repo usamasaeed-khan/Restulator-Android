@@ -2,6 +2,7 @@ package com.example.restulator;
 
 import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.Table;
+import com.example.restulator.Models.UnpaidOrder;
 import com.example.restulator.Models.User;
 import com.example.restulator.Models.Waiter;
 
@@ -19,6 +20,11 @@ public interface RestulatorAPI {
     // send a GET request to localhost:3000/api/tables/
     @GET("tables/all")
     Call<ApiResponse<Table>> getTables(
+            @Header("authorization") String authorization
+    );
+
+    @GET("nonPaid/")
+    Call<ApiResponse<UnpaidOrder>> getNonPaidOrders(
             @Header("authorization") String authorization
     );
 

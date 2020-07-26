@@ -24,9 +24,8 @@ public class RetrofitInstance {
     private static Context context;
 
     // This is the base URL, for all the api requests.
-    private final static String BASE_URL = "http://10.0.2.2:3000/api/";
-// "http://10.0.2.2:3000/api/" emulator ip
-//    192.168.0.102
+    private final static String BASE_URL = "http://192.168.0.108:3000/api/";
+//10.0.2.2
     // Set BASE_URL, GsonConverterFactory( which converts json to our models) and return retrofit instance.
 
     private final static OkHttpClient client = new OkHttpClient().newBuilder().addInterceptor(new AddCookiesInterceptor(context)).addInterceptor(new ReceivedCookiesInterceptor(context)).build();
