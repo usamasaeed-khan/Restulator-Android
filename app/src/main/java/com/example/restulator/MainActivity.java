@@ -18,11 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.Table;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import okhttp3.HttpUrl;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
