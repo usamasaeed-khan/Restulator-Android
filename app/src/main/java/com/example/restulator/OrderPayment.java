@@ -26,7 +26,7 @@ public class OrderPayment extends AppCompatActivity {
 
     PaymentOrder[] paymentOrders;
     RestulatorAPI apiInterface;
-    TextView totalPriceTextview, taxTextview, billTextview,changeTextview;
+    TextView totalPriceTextview, taxTextview, billTextview, changeTextview;
     EditText paymentEdittext;
     PaymentUpdate paymentUpdate;
     Integer orderId;
@@ -38,16 +38,12 @@ public class OrderPayment extends AppCompatActivity {
 
         Intent intentFromUnpaidOrderDetail = getIntent();
         orderId = intentFromUnpaidOrderDetail.getExtras().getInt("OrderId");
-        Toast.makeText(getApplicationContext(), "Order ID : " +orderId,Toast.LENGTH_LONG).show();
 
         totalPriceTextview = findViewById(R.id.TotalPriceData);
         taxTextview = findViewById(R.id.TaxData);
         billTextview = findViewById(R.id.BillData);
-        paymentEdittext = (EditText) findViewById(R.id.PaymentBox);
+        paymentEdittext = findViewById(R.id.PaymentBox);
         changeTextview = findViewById(R.id.ChangeData);
-
-
-
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
         String accessToken = pref.getString("ACCESS_TOKEN", null);
@@ -79,9 +75,7 @@ public class OrderPayment extends AppCompatActivity {
                                 float payment = Float.parseFloat(String.valueOf(s));
                                 paymentUpdate = new PaymentUpdate(payment);
                                 if(paymentOrders[0].getBill() - payment > 0){
-
                                     changeTextview.setText(String.valueOf(paymentOrders[0].getBill() - payment));
-
                                 }
                                 else{
                                     changeTextview.setText(String.valueOf(0));
@@ -90,9 +84,6 @@ public class OrderPayment extends AppCompatActivity {
                             else{
                                 changeTextview.setText(String.valueOf(0));
                             }
-
-
-
 
                         }
                     });
@@ -106,11 +97,6 @@ public class OrderPayment extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-
-
 
 
     }
@@ -127,6 +113,10 @@ public class OrderPayment extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
                     startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
+
                 }
             }
 
