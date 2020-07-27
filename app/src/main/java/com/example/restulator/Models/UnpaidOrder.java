@@ -12,7 +12,7 @@ public class UnpaidOrder implements Serializable {
     private String order_status;
     private String order_time;
     private String complete_time;
-    private int bill;
+    private float bill;
 
     public UnpaidOrder(int cook_id, String cook_name, int waiter_id, String waiter_name, String customer_name, int id, String order_status, String order_time, String complete_time, int bill) {
         this.cook_id = cook_id;
@@ -99,7 +99,7 @@ public class UnpaidOrder implements Serializable {
         this.complete_time = complete_time;
     }
 
-    public int getBill() {
+    public float getBill() {
         return bill;
     }
 

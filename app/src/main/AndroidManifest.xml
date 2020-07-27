@@ -14,6 +14,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".AddCustomerActivity"></activity>
+        <activity android:name=".OrderPayment" />
+        <activity android:name=".UnpaidOrderDetail" />
         <activity android:name=".UnpaidOrders" />
         <activity android:name=".OrderActivity" />
         <activity android:name=".MainActivity" />

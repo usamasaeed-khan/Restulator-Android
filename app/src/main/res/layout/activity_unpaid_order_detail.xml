@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/OrderIdData"
             />
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/CustomerNameData"
             />
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/OrderDateData"
             />
@@ -88,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/WaiterNameData"
             />
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/CookNameData"
             />
@@ -128,7 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/CompleteTimeData"
             />
@@ -149,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/OrderStatusData"
             />
@@ -169,7 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:id="@+id/BillData"
             />

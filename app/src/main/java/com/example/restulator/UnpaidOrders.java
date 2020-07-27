@@ -51,10 +51,10 @@ public class UnpaidOrders extends AppCompatActivity {
             public void onFailure(Call<ApiResponse<UnpaidOrder>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
 
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.apply();
+//                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+//                SharedPreferences.Editor editor = pref.edit();
+//                editor.clear();
+//                editor.apply();
             }
         });
     }
