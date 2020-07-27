@@ -22,6 +22,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     RestulatorAPI apiInterface;
@@ -128,8 +130,8 @@ public class LoginActivity extends AppCompatActivity {
     private Boolean isLoggedIn() {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-
-        return getLoginToken(pref) != null && getLoginTimeDifference(pref) < 1;
+        int timeDiff = getLoginTimeDifference(pref);
+        return getLoginToken(pref) != null && timeDiff == 0;
 
     }
 
@@ -143,8 +145,11 @@ public class LoginActivity extends AppCompatActivity {
         long differenceInMs;
 
         try {
-            loginTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(pref.getString("LOGIN_AT", null));
-            differenceInMs = Calendar.getInstance().getTime().getTime() - loginTime.getTime();
+            String storedLoginTime = pref.getString("LOGIN_AT", null);
+            if (storedLoginTime == null)
+                return -1;
+            loginTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).parse(storedLoginTime);
+            differenceInMs = Calendar.getInstance().getTime().getTime() - (loginTime != null ? loginTime.getTime() : 0);
         }
         catch (ParseException e){
             differenceInMs = 0;
