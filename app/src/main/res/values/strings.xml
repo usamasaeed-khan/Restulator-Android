@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Restulator</string>
+    <string name="waiter_name">Select Waiter name</string>
+    <string name="enter_order_timing">Enter Order Timing</string>
+    <string name="enter_order_complete_time">Enter Order Complete Time</string>
+    <string name="select_dish_type">Select Dish Type</string>
+    <string name="select_dish">Select Dish</string>
+    <string name="please_enter_quantity">PLease Enter Quantity</string>
+    <string name="maximum_dishes_that_can_be_added">Maximum Dishes that can be added:</string>
+    <string name="add_order">Add Order</string>
+    <string name="total_price">Total Price</string>
+
+    <string-array name="spinnerItems">
+        <item>pending</item>
+        <item>cooking</item>
+        <item>cooked</item>
+        <item>served</item>
+    </string-array>
 </resources>

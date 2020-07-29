@@ -1,149 +1,92 @@
 package com.example.restulator.Models;
 
 public class Order {
+        private int customer_id;
+        private String order_time;
+        private String complete_time;
+        private String order_status;
+        private int table_number;
+        private int cook_id;
+        private int waiter_id;
+        private float total_amount;
+        private int[][] dishes;
 
-        private int id;
-        private int customerId;
-        private String orderTime;
-        private String completeTime;
-        private String orderStatus;
-        private int tableNumber;
-        private int cookId;
-        private int waiterId;
-        private int totalAmount;
-        private double tax;
-        private int bill;
-        private String paymentStatus;
-        private int payment;
-        private double pointsPerOrder;
-        private int pointsLimits;
-        private double discountPercent;
+    public Order(int customer_id, String order_time, String complete_time, String order_status, int table_number, int cook_id, int waiter_id, float total_amount, int[][] dishes) {
 
-        public int getId() {
-            return id;
-        }
+        this.customer_id = customer_id;
+        this.order_time = order_time;
+        this.complete_time = complete_time;
+        this.order_status = order_status;
+        this.table_number = table_number;
+        this.cook_id = cook_id;
+        this.waiter_id = waiter_id;
+        this.total_amount = total_amount;
+        this.dishes = dishes;
+    }
 
-        public void setId(int id) {
-            this.id = id;
-        }
+
 
         public int getCustomerId() {
-            return customerId;
+            return customer_id;
         }
 
         public void setCustomerId(int customerId) {
-            this.customerId = customerId;
+            this.customer_id = customer_id;
         }
 
-        public String getOrderTime() {
-            return orderTime;
+        public String getOrder_time() {
+            return order_time;
         }
 
-        public void setOrderTime(String orderTime) {
-            this.orderTime = orderTime;
+        public void setOrder_time(String order_time) {
+            this.order_time = order_time;
         }
 
-        public String getCompleteTime() {
-            return completeTime;
+        public String getComplete_time() {
+            return complete_time;
         }
 
-        public void setCompleteTime(String completeTime) {
-            this.completeTime = completeTime;
+        public void setComplete_time(String complete_time) {
+            this.complete_time = complete_time;
         }
 
-        public String getOrderStatus() {
-            return orderStatus;
+        public String getOrder_status() {
+            return order_status;
         }
 
-        public void setOrderStatus(String orderStatus) {
-            this.orderStatus = orderStatus;
+        public void setOrder_status(String order_status) {
+            this.order_status = order_status;
         }
 
         public int getTableNumber() {
-            return tableNumber;
+            return table_number;
         }
 
         public void setTableNumber(int tableNumber) {
-            this.tableNumber = tableNumber;
+            this.table_number = table_number;
         }
 
-        public int getCookId() {
-            return cookId;
+        public int getCook_id() {
+            return cook_id;
         }
 
-        public void setCookId(int cookId) {
-            this.cookId = cookId;
+        public void setCook_id(int cook_id) {
+            this.cook_id = cook_id;
         }
 
-        public int getWaiterId() {
-            return waiterId;
+        public int getWaiter_id() {
+            return waiter_id;
         }
 
-        public void setWaiterId(int waiterId) {
-            this.waiterId = waiterId;
+        public void setWaiter_id(int waiter_id) {
+            this.waiter_id = waiter_id;
         }
 
-        public int getTotalAmount() {
-            return totalAmount;
+        public float getTotal_amount() {
+            return total_amount;
         }
 
-        public void setTotalAmount(int totalAmount) {
-            this.totalAmount = totalAmount;
-        }
-
-        public double getTax() {
-            return tax;
-        }
-
-        public void setTax(double tax) {
-            this.tax = tax;
-        }
-
-        public int getBill() {
-            return bill;
-        }
-
-        public void setBill(int bill) {
-            this.bill = bill;
-        }
-
-        public String getPaymentStatus() {
-            return paymentStatus;
-        }
-
-        public void setPaymentStatus(String paymentStatus) {
-            this.paymentStatus = paymentStatus;
-        }
-
-        public int getPayment() {
-            return payment;
-        }
-
-        public void setPayment(int payment) {
-            this.payment = payment;
-        }
-
-        public double getPointsPerOrder() {
-            return pointsPerOrder;
-        }
-
-        public void setPointsPerOrder(double pointsPerOrder) {
-            this.pointsPerOrder = pointsPerOrder;
-        }
-
-        public int getPointsLimits() {
-            return pointsLimits;
-        }
-
-        public void setPointsLimits(int pointsLimits) {
-            this.pointsLimits = pointsLimits;
-        }
-
-        public double getDiscountPercent() {
-            return discountPercent;
-        }
-
-        public void setDiscountPercent(double discountPercent) {
-            this.discountPercent = discountPercent;
+        public void setTotal_amount(int total_amount) {
+            this.total_amount = total_amount;
         }
 }

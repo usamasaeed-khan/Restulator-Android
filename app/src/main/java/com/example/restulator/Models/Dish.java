@@ -1,42 +1,40 @@
 package com.example.restulator.Models;
 
+import androidx.annotation.NonNull;
+
 public class Dish {
+    private int id;
+    private String name;
+    private String description;
+    private float price;
 
-    private int orderId;
-    private int dishId;
-    private int dishQuantity;
-    private String dishCreatedAt;
-
-    public int getOrderId() {
-        return orderId;
+    public int getId() {
+        return id;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public String getName() {
+        return name;
     }
 
-    public int getDishId() {
-        return dishId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDishId(int dishId) {
-        this.dishId = dishId;
+
+    @Override
+    public String toString() {
+        return name;
     }
 
-    public int getDishQuantity() {
-        return dishQuantity;
+    public float getPrice() {
+        return price;
     }
 
-    public void setDishQuantity(int dishQuantity) {
-        this.dishQuantity = dishQuantity;
-    }
-
-    public String getDishCreatedAt() {
-        return dishCreatedAt;
-    }
-
-    public void setDishCreatedAt(String dishCreatedAt) {
-        this.dishCreatedAt = dishCreatedAt;
+    public Dish(int id, String name, String description, float price) {
+        this.name = name;
+        this.id = id;
+        this.description = description;
+        this.price = price;
     }
 
 }

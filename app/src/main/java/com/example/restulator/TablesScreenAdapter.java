@@ -71,6 +71,7 @@ public class TablesScreenAdapter extends RecyclerView.Adapter<TablesScreenAdapte
                 Toast.makeText(context, "Status: " + table.getStatus(),Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(context, OrderActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("table_id", table.getId());
                 context.startActivity(intent);
             }
