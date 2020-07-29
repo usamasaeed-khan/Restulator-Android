@@ -104,28 +104,42 @@ public class OrderPayment extends AppCompatActivity {
     public void makePayment(View view) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
         String accessToken = pref.getString("ACCESS_TOKEN", null);
+
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
-        paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
-                if(response.body() != null ? response.body().getStatus() : false){
-                    Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
-                    startActivity(intent);
+        if (paymentUpdate.getPayment() != 0){
+
+            Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
+            paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                    if(response.body() != null ? response.body().getStatus() : false){
+                        Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
+
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
 
+                @Override
+                public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
+            });
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please enter Payment Amount!",Toast.LENGTH_LONG).show();
+        }
 
 
+
+    }
+
+    public void viewDishes(View view) {
+        Intent intent = new Intent(getApplicationContext(), OrderDishesActivity.class);
+        intent.putExtra("PaymentOrders",  paymentOrders);
+        startActivity(intent);
     }
 }

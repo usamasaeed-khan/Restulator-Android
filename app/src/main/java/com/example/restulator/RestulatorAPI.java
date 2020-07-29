@@ -12,6 +12,7 @@ import com.example.restulator.Models.Waiter;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -49,6 +50,12 @@ public interface RestulatorAPI {
             @Path("orderId") Integer orderId,
             @Body PaymentUpdate paymentUpdate,
             @Header("authorization") String authorization);
+
+    @DELETE("nonPaid/{orderId}")
+    Call<ApiResponse<MySqlResult>> deleteOrder(
+            @Path("orderId") Integer orderId,
+            @Header("authorization") String authorization
+    );
 
 
 

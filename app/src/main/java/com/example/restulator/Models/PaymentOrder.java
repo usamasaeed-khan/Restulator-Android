@@ -1,6 +1,8 @@
 package com.example.restulator.Models;
 
-public class PaymentOrder {
+import java.io.Serializable;
+
+public class PaymentOrder implements Serializable {
     int dish_id;
     String dish_name;
     float price;

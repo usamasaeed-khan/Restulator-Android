@@ -1,8 +1,15 @@
 package com.example.restulator;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +17,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.restulator.Models.ApiResponse;
+import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.Order;
 import com.example.restulator.Models.UnpaidOrder;
 
@@ -25,6 +34,8 @@ public class UnpaidOrderDetail extends AppCompatActivity{
     UnpaidOrder unpaidOrder;
     TextView customerTextView, orderIdTextview, orderDateTextview, cookNameTextView, waiterNameTextview, completeTimeTextView, orderStatusTextview, billTextview;
     int OrderId;
+    RestulatorAPI apiInterface;
+
 
 
     @Override
@@ -96,5 +107,72 @@ public class UnpaidOrderDetail extends AppCompatActivity{
         Intent intent = new Intent(getApplicationContext(), OrderPayment.class);
         intent.putExtra("OrderId",  OrderId);
         startActivity(intent);
+    }
+
+    public void deleteOrder(View view) {
+        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+        builderSingle.setTitle(R.string.deleteAlertTitle);
+        builderSingle.setMessage(R.string.deleteAlertMessage);
+        builderSingle.setIcon(R.drawable.ic_delete_icon);
+        builderSingle.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+//                        Toast.makeText(getApplicationContext(), "Cancel",Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+        builderSingle.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteOrderAPI();
+
+//                        Log.d(TAG, "onClick: OK Called.");
+//                        if(okMethod.equals("okMethod1")){
+//                            okMethod1();
+//                        }
+//                        else if(okMethod.equals("okMethod2")){
+//                            okMethod2();
+//                        }
+                    }
+                });
+
+
+
+        builderSingle.show();
+
+    }
+    public void deleteOrderAPI(){
+        apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
+        Call<ApiResponse<MySqlResult>> deleteOrderCall = apiInterface.deleteOrder(unpaidOrder.getId(),accessToken);
+        deleteOrderCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                if(response.body() != null ? response.body().getStatus() : false){
+                    Toast.makeText(getApplicationContext(), "Deleted Successfully! ",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
+                    startActivity(intent);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
+
     }
 }

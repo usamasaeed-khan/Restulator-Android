@@ -145,6 +145,7 @@
             android:layout_toRightOf="@+id/AddPaymentButton"
             android:textColor="@color/textBackgroundColor"
             android:textStyle="bold"
+            android:onClick="viewDishes"
             android:textSize="12dp"/>
 
     </RelativeLayout>
