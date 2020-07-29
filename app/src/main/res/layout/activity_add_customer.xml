@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCustomerActivity">
+
+    <include
+        layout="@layout/progress_bar"
+        android:id="@+id/progress_bar"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginHorizontal="20dp"
+        android:src="@drawable/customer"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_customer_name"
+        android:inputType="textCapWords"
+        android:hint="Enter Customer Name"
+        android:layout_marginTop="100dp"
+        android:layout_marginHorizontal="40dp"
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_customer_email"
+        android:inputType="textEmailAddress"
+        android:hint="Enter Customer Email"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="40dp"
+        />
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/go_to_forgot_password"
+        android:textSize = "15sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="40dp"
+        android:text="Optional"/>
+    <Button
+        android:id="@+id/add_customer_btn"
+        android:background="@drawable/ic_round_button"
+        android:layout_width="wrap_content"
+        android:text="ADD CUSTOMER"
+        android:textColor="#ffff"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

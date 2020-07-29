@@ -1,6 +1,11 @@
 package com.example.restulator;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -40,8 +45,12 @@ public class MainActivity extends AppCompatActivity {
         // Creating retrofit instance to call the getTables() method.
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
 
-        // Initialize call to the api method getTables()
-        Call<ApiResponse<Table>> call = apiInterface.getTables();
+
+        // Access the token from the shared preference.
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
+
+        Call<ApiResponse<Table>> call = apiInterface.getTables(accessToken);
         progressBar.setVisibility(View.VISIBLE);
         call.enqueue(new Callback<ApiResponse<Table>>() {
             @Override
@@ -55,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
 
                     recyclerView.setAdapter(new TablesScreenAdapter(getApplicationContext(), tablesData));
-                }
+
+               }
 
             }
 
@@ -65,7 +75,51 @@ public class MainActivity extends AppCompatActivity {
                 // If incomplete, toast the error message.
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);
+//                Toast.makeText(getApplicationContext(), "Signing Off", Toast.LENGTH_LONG).show();
+
+                // Deleting all shared preferences data for the current user to logout.
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.apply();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
     }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.logout:
+                Toast.makeText(getApplicationContext(), "Signing Off", Toast.LENGTH_LONG).show();
+
+                // Deleting all shared preferences data for the current user to logout.
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.apply();
+
+
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return true;
+            case R.id.unpaid_orders:
+                startActivity(new Intent(this, UnpaidOrders.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="20dp"
+    android:layout_height="100dp"
+
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linear_inner_block">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/DishId"
+            android:layout_centerVertical="true"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            ></TextView>
+
+        <TextView
+            android:id="@+id/DishName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
+
+
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/DishQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        >
+
+    </TextView>
+
+
+</RelativeLayout>

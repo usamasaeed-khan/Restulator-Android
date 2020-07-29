@@ -4,12 +4,14 @@ public class Waiter {
     private int id;
     private String email;
     private String role;
+    private String token;
 
 
-    public Waiter(int id,String email, String role) {
+    public Waiter(int id,String email, String role,String token) {
         this.email = email;
         this.role = role;
         this.id = id;
+        this.token = token;
     }
 
     public String getEmail() {
@@ -22,5 +24,8 @@ public class Waiter {
 
     public int getId() {
         return id;
+    }
+    public String getToken() {
+        return token;
     }
 }

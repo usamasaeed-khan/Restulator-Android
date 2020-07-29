@@ -7,6 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,14 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.User;
 import com.example.restulator.Models.Waiter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
     RestulatorAPI apiInterface;
     Waiter obj;
@@ -24,14 +33,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if(isLoggedIn()){
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
     }
 
     public void login(View view) {
-        EditText emailEditText =findViewById(R.id.loginEmail);
-        String email =emailEditText.getText().toString();
 
-        EditText pwdEditText =findViewById(R.id.loginPass);
-        String password =pwdEditText.getText().toString();
+        EditText emailEditText = findViewById(R.id.loginEmail);
+        String email = emailEditText.getText().toString();
+
+        EditText pwdEditText = findViewById(R.id.loginPass);
+        String password = pwdEditText.getText().toString();
 
         if(!email.matches("") || !password.matches("")){
             User userObj = new User(email,password);
@@ -48,14 +63,44 @@ public class LoginActivity extends AppCompatActivity {
                     if(response.body() != null ? response.body().getStatus() : false){
                          obj = response.body().getData()[0];
 
-                         if(obj.getRole() == "waiter" ||obj.getRole() == "Waiter"  ){
-                             Toast.makeText(getApplicationContext(), "Login Successful " + obj.getId() + " id Email:" + obj.getEmail() ,Toast.LENGTH_LONG).show();
+                         if(obj.getRole().equals("waiter") || obj.getRole().equals("Waiter") ){
+                             Toast.makeText(getApplicationContext(), "Login Successful "  ,Toast.LENGTH_LONG).show();
 
-                             Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                             startActivity(intent);
+
+
+                             String pattern = "MM/dd/yyyy HH:mm:ss";
+
+                            // Create an instance of SimpleDateFormat used for formatting
+                            // the string representation of date according to the chosen pattern
+                             DateFormat df = new SimpleDateFormat(pattern);
+
+                            // Get the today date using Calendar object.
+                             Date today = Calendar.getInstance().getTime();
+                            // Using DateFormat format method we can create a string
+                            // representation of a date with the defined format.
+                             String todayAsString = df.format(today);
+
+
+                             //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+
+                             // Initializing Shared Preferences obj.
+
+                             // 1st argument is the file name and 2nd arg is the access mode, 0 is for private mode to be
+                             // accessed only by the application.
+                             SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                             SharedPreferences.Editor editor = pref.edit();
+                             editor.putString("ACCESS_TOKEN", obj.getToken());
+                             editor.putString("LOGIN_AT", todayAsString);
+                             editor.apply(); // commit and save changes
+
+
+                             //Toast.makeText(getApplicationContext(), "Token Rec: "+obj.getToken(), Toast.LENGTH_LONG).show();
+                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                             finish();
                          }
                          else{
-                             Toast.makeText(getApplicationContext(), "Login Unsuccessful! Please Enter Registered Waiter Email and Password!",Toast.LENGTH_LONG).show();
+
+                             Toast.makeText(getApplicationContext(), "Login Unsuccessful! Please Enter Registered Waiter Email and Password!" ,Toast.LENGTH_LONG).show();
                          }
 
 
@@ -80,8 +125,38 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please Enter Email and Password!",Toast.LENGTH_LONG).show();
         }
         // Creating retrofit instance to call the getTables() method.
+    }
 
+    private Boolean isLoggedIn() {
 
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        int timeDiff = getLoginTimeDifference(pref);
+        return getLoginToken(pref) != null && timeDiff == 0;
 
     }
+
+    private String getLoginToken(SharedPreferences pref){
+        return pref.getString("ACCESS_TOKEN", null);
+    }
+
+
+    private int getLoginTimeDifference(SharedPreferences pref){
+        Date loginTime = null;
+        long differenceInMs;
+
+        try {
+            String storedLoginTime = pref.getString("LOGIN_AT", null);
+            if (storedLoginTime == null)
+                return -1;
+            loginTime = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.US).parse(storedLoginTime);
+            differenceInMs = Calendar.getInstance().getTime().getTime() - (loginTime != null ? loginTime.getTime() : 0);
+        }
+        catch (ParseException e){
+            differenceInMs = 0;
+        }
+
+        // convert difference in hours.
+        return (int) ((differenceInMs / (1000*60*60)) % 24);
+    }
+
 }
