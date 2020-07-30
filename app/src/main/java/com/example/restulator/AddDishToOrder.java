@@ -20,11 +20,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.restulator.Models.AddDishInOrder;
 import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.CheckIngredients;
 import com.example.restulator.Models.Dish;
 import com.example.restulator.Models.DishType;
-import com.example.restulator.Models.Order;
+import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.PossibleDishes;
 import com.google.gson.Gson;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -38,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DishActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class AddDishToOrder extends AppCompatActivity implements Validator.ValidationListener {
 
     Spinner dishTypeSpinner, dishSpinner;
     TextView dishPrice, dishTotalPrice, possibleDishes;
@@ -47,7 +48,7 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
     @Min(1)
     EditText dishQuantity;
 
-    Button addOrder,addDishes;
+    Button addDish;
     RestulatorAPI apiInterface;
     DishType[] dishTypeData;
     Dish[] dishData;
@@ -55,76 +56,35 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
     PossibleDishes check;
     List<DishType> dishTypeList = new ArrayList<>();
     List<Dish> dishList = new ArrayList<>();
-    public static int[][] dishes;
-    public List<HashMap<Integer, Integer>> addDish = new ArrayList<HashMap<Integer, Integer>>();
-    private Validator validator;
     public static float totalPrice = 0;
-    public static float totalAmount;
-    ArrayList<Float> priceList = new ArrayList<Float>();
-
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dish);
-        validator = new Validator(this);
-        validator.setValidationListener(this);
-
-        final int waiterId = getIntent().getIntExtra("waiterId",0);
-        final int cookId = getIntent().getIntExtra("cookId",0);
-        final int customerId = getIntent().getIntExtra("customerId",0);
-        final int tableId = getIntent().getIntExtra("table_id",0);
-        final String orderTime = getIntent().getStringExtra("orderTime");
-        final String completeTime = getIntent().getStringExtra("completeTime");
-        final String orderStatus = getIntent().getStringExtra("orderStatus");
+        setContentView(R.layout.activity_add_dish_to_order);
 
         dishTypeSpinner = findViewById(R.id.dishTypeSpinner);
         dishSpinner = findViewById(R.id.dishSpinner);
         dishQuantity = findViewById(R.id.enterQuantity);
         dishPrice = findViewById(R.id.originalPrice);
         dishTotalPrice = findViewById(R.id.calculatedPrice);
-        addOrder = findViewById(R.id.addOrder);
         possibleDishes = findViewById(R.id.approxDishes);
-        addDishes = findViewById(R.id.addDishes);
-
+        addDish = findViewById(R.id.addDish);
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
         insertDishTypeData();
         calculateTotalPrice();
 
-        addDishes.setOnClickListener(new View.OnClickListener() {
+        addDish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 validator.validate();
             }
         });
-
-        addOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            Toast.makeText(DishActivity.this, "Total Amount is " + totalAmount, Toast.LENGTH_SHORT).show();
-
-                Order order = new Order(customerId,orderTime,completeTime,orderStatus,tableId,cookId,waiterId,totalAmount,dishes);
-                apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-                Call<ApiResponse<Order>> call = apiInterface.placeOrder(order);
-
-                call.enqueue(new Callback<ApiResponse<Order>>() {
-                    @Override
-                    public void onResponse(Call<ApiResponse<Order>> call, Response<ApiResponse<Order>> response) {
-                        Toast.makeText(DishActivity.this, "Your Order has been placed", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(DishActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ApiResponse<Order>> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
     }
+
 
     public void insertDishTypeData() {
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
@@ -183,7 +143,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
 
 
     }
-
     public void insertDishData(int type_id) {
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
         Call<ApiResponse<Dish>> call = apiInterface.getDish(type_id);
@@ -340,73 +299,39 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
 
         if(possible > 0) {
             if(quantity <= possible) {
-                Toast.makeText(this, "We got it right!", Toast.LENGTH_LONG).show();
+                final int order_id = getIntent().getIntExtra("order_id",0);
+                Toast.makeText(this, "Order_id is " + order_id, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Total price " + totalPrice, Toast.LENGTH_LONG).show();
+
 
                 Dish dish = (Dish) dishSpinner.getSelectedItem();
                 int dish_id = dish.getId();
-
-//                AddDishes addDishes = new AddDishes();
-//                addDishes.setDish_id(dish_id);
-//
-//                addDishes.setDish_quantity(quantity);
-
-                Toast.makeText(this, "addDIsh" + addDish.toString()+ "\n" + "dishes are "+ dishes, Toast.LENGTH_LONG).show();
-
-                HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
-
-                hmap.put(dish_id,quantity);
-
-                    addDish.add(hmap);
-
-                    Object[] arr = hmap.entrySet().toArray();
-
-                HashMap<Integer, Integer> finalHmap = new HashMap<Integer, Integer>();
-
-                for(int i=0; i< addDish.size(); i++) {
-                        Integer[] keys = new Integer[addDish.get(i).size()];
-                        Integer[] values = new Integer[addDish.get(i).size()];
-                        int index = 0;
-                        for (Map.Entry<Integer, Integer> mapEntry : addDish.get(i).entrySet()) {
-                            keys[index] = mapEntry.getKey();
-                            values[index] = mapEntry.getValue();
-
-                            if(finalHmap.containsKey(keys[index])) {
-                                Integer prevValue = finalHmap.get(keys[index]);
-                                finalHmap.put(keys[index],prevValue+ values[index]);
-                            }
-                            else {
-                                finalHmap.put(keys[index],values[index]);
-                            }
-
-                                index++;
+                
+                final AddDishInOrder addDishInOrder = new AddDishInOrder(order_id,quantity,dish_id,totalPrice);
+                apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
+                Call<ApiResponse<MySqlResult>> call = apiInterface.addDishInOrder(addDishInOrder);
+                
+                call.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                        if(response.body() != null ? response.body().getStatus() : false){
+                            Toast.makeText(getApplicationContext(), "Order Placed Successful!",Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
+                            startActivity(intent);
                         }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                        Toast.makeText(AddDishToOrder.this, "Chal nikal!!", Toast.LENGTH_SHORT).show();
 
                     }
-                Object[] arr2 = finalHmap.entrySet().toArray();
-                dishes = new int[finalHmap.size()][2];
-
-                int index = 0;
-                for (Map.Entry<Integer, Integer> mapEntry : finalHmap.entrySet()) {
-                    dishes[index] = new int[] {mapEntry.getKey(), mapEntry.getValue()};
-                    index++;
-                }
-
-                for (int i = 0; i < dishes.length; i++)
-                    System.out.println("final Arr "+Arrays.toString(dishes[i]));
+                });
                 
-                Log.i("cheetos", addDish.toString());
-//                System.out.println("cheetah"+ Arrays.toString(addDish.get(0)));
-                System.out.println("Add Dish: "+ addDish);
-                System.out.println("EntrySet: "+ Arrays.toString(arr));
-                System.out.println("FinalHmap: "+ Arrays.toString(arr2));
-
-                Toast.makeText(this, "addDIsh list is  " + addDish+ "\n" + "dishes are "+ dishes, Toast.LENGTH_LONG).show();
-
-                priceList.add(totalPrice);
-                Log.i("Price list is ", priceList.toString());
-                totalAmount = calculateTotalAmount(priceList);
-                Log.i("totalAmount is ", String.valueOf(totalAmount));
-
             }
             else {
                 dishQuantity.setError("Dishes Quantity should be less than or equal to "+ possible);
@@ -419,14 +344,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
             Toast.makeText(this, "Dish is not available! Please select some other dish", Toast.LENGTH_LONG).show();
         }
 
-    }
-
-    private float calculateTotalAmount(ArrayList<Float> totalPrice) {
-        float sum = 0;
-        for (float i: totalPrice) {
-            sum += i;
-        }
-        return sum;
     }
 
     @Override

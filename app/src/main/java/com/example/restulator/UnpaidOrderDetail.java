@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class UnpaidOrderDetail extends AppCompatActivity{
     UnpaidOrder unpaidOrder;
     TextView customerTextView, orderIdTextview, orderDateTextview, cookNameTextView, waiterNameTextview, completeTimeTextView, orderStatusTextview, billTextview;
     int OrderId;
+    Button addDish, editOrder;
     RestulatorAPI apiInterface;
 
 
@@ -50,9 +52,29 @@ public class UnpaidOrderDetail extends AppCompatActivity{
         completeTimeTextView = findViewById(R.id.CompleteTimeData);
         orderStatusTextview = findViewById(R.id.OrderStatusData);
         billTextview = findViewById(R.id.BillData);
+        addDish = findViewById(R.id.addButton);
+        editOrder = findViewById(R.id.editButton);
+
+        addDish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentFromUnpaidOrders = getIntent();
+                if(intentFromUnpaidOrders.getExtras() != null){
+                    unpaidOrder = (UnpaidOrder) intentFromUnpaidOrders.getSerializableExtra("UnpaidOrder");
+                    int order_id = unpaidOrder.getId();
+
+                    Intent intent = new Intent(UnpaidOrderDetail.this, AddDishToOrder.class);
+                    intent.putExtra("order_id", order_id);
+
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Order Details Not Found" ,Toast.LENGTH_LONG).show();
+                }
+            }
+     });
 
         setDetails();
-
 
 
     }
