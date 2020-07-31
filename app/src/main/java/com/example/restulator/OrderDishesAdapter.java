@@ -35,9 +35,9 @@ public class OrderDishesAdapter extends RecyclerView.Adapter<OrderDishesAdapter.
     @Override
     public void onBindViewHolder(@NonNull OrderDishesAdapterViewHolder holder, int position) {
         final PaymentOrder paymentOrder = paymentOrders[position];
-        holder.DishIdTextview.setText(String.valueOf(paymentOrder.getDish_id()));
+        holder.DishQuantityTextview.setText(String.valueOf(paymentOrder.getDish_quantity()));
         holder.DishNameTextView.setText(paymentOrder.getDish_name());
-        holder.DishQuantityTextView.setText(String.valueOf(paymentOrder.getDish_quantity()));
+        holder.DishPriceTextview.setText(String.valueOf(paymentOrder.getPrice()));
 
 
     }
@@ -49,16 +49,17 @@ public class OrderDishesAdapter extends RecyclerView.Adapter<OrderDishesAdapter.
         return paymentOrders.length;
     }
     public class OrderDishesAdapterViewHolder extends RecyclerView.ViewHolder{
-        TextView DishIdTextview;
+        TextView DishQuantityTextview;
         TextView DishNameTextView;
-        TextView DishQuantityTextView;
+//        TextView DishQuantityTextView;
+        TextView DishPriceTextview;
 
 
         public OrderDishesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            DishIdTextview = itemView.findViewById(R.id.DishId);
+            DishQuantityTextview = itemView.findViewById(R.id.DishQuantityData);
             DishNameTextView = itemView.findViewById(R.id.DishName);
-            DishQuantityTextView = itemView.findViewById(R.id.DishQuantity);
+            DishPriceTextview = itemView.findViewById(R.id.DishPriceData);
         }
     }
 }

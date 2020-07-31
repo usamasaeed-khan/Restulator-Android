@@ -1,13 +1,13 @@
 package com.example.restulator.Models;
 
 public class PaymentUpdate {
-    float payment;
+    Float payment;
 
     public PaymentUpdate(float payment) {
         this.payment = payment;
     }
 
-    public float getPayment() {
+    public Float getPayment() {
         return payment;
     }
 

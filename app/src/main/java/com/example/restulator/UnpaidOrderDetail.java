@@ -132,13 +132,6 @@ public class UnpaidOrderDetail extends AppCompatActivity{
                     public void onClick(DialogInterface dialogInterface, int i) {
                         deleteOrderAPI();
 
-//                        Log.d(TAG, "onClick: OK Called.");
-//                        if(okMethod.equals("okMethod1")){
-//                            okMethod1();
-//                        }
-//                        else if(okMethod.equals("okMethod2")){
-//                            okMethod2();
-//                        }
                     }
                 });
 

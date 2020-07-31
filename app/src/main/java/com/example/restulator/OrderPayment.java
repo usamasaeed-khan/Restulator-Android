@@ -83,6 +83,7 @@ public class OrderPayment extends AppCompatActivity {
                             }
                             else{
                                 changeTextview.setText(String.valueOf(0));
+
                             }
 
                         }
@@ -106,7 +107,7 @@ public class OrderPayment extends AppCompatActivity {
         String accessToken = pref.getString("ACCESS_TOKEN", null);
 
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        if (paymentUpdate.getPayment() != 0){
+        if (paymentUpdate.getPayment() != 0.0f ){
 
             Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
             paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {

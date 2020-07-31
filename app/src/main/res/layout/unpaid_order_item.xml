@@ -36,12 +36,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="right"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/arrowIcon"
             android:textSize="16sp"
             android:textStyle="bold"
             >
 
         </TextView>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:id="@+id/arrowIcon"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow_right"
+        >
+
+    </ImageView>
 
 
 </RelativeLayout>

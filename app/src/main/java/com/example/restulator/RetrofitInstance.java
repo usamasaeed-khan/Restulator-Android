@@ -24,7 +24,7 @@ public class RetrofitInstance {
     private static Context context;
 
     // This is the base URL, for all the api requests.
-    private final static String BASE_URL = "http://10.0.2.2:3000/api/";
+    private final static String BASE_URL = "http://192.168.0.102:3000/api/";
 //10.0.2.2
     // Set BASE_URL, GsonConverterFactory( which converts json to our models) and return retrofit instance.
 

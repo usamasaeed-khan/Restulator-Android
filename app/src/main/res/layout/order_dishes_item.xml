@@ -4,44 +4,90 @@
     android:layout_width="match_parent"
     android:padding="20dp"
     android:layout_height="100dp"
-
     >
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_alignParentLeft="true"
         android:id="@+id/linear_inner_block">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:id="@+id/DishId"
-            android:layout_centerVertical="true"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            ></TextView>
+
 
         <TextView
             android:id="@+id/DishName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:textSize="16sp"
-            android:textStyle="bold"></TextView>
+            android:fontFamily="sans-serif"
+            android:singleLine="false"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
 
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/DishQuantity"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="right"
-        android:layout_alignParentRight="true"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
         >
 
-    </TextView>
+        <TextView
+            android:id="@+id/DishQuantityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:fontFamily="sans-serif"
+            android:text="QUANTITY"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/DishQuantityData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        >
+
+        <TextView
+            android:id="@+id/DishPriceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif"
+            android:text="PRICE"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/DishPriceData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>
+
