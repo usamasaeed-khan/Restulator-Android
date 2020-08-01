@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EditOrderActivity"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/orderStatus"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:paddingLeft="20dp"
+            android:text="Select Order Status"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+
+        <Spinner
+            android:id="@+id/orderStatusSpinner"
+            android:layout_marginTop="55dp"
+            android:layout_toRightOf="@id/orderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/spinnerItems"
+            />
+
+        <TextView
+            android:id="@+id/waiterName"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/orderStatus"
+            android:ems="10"
+            android:paddingLeft="20dp"
+            android:text="Select Waiter"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/waiterSpinner"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@id/waiterName"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/orderStatusSpinner"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/cookName"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:paddingLeft="20dp"
+            android:layout_below="@id/waiterName"
+            android:text="Select Cook"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/cookSpinner"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/cookName"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/waiterSpinner"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/tableNumber"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:paddingLeft="20dp"
+            android:layout_below="@id/cookName"
+            android:text="Select Table"
+            android:inputType="textPersonName"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/tableNumberSpinner"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/tableNumber"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/cookSpinner"
+            android:layout_height="wrap_content"
+            />
+
+
+        <Button
+            android:id="@+id/editOrder"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tableNumber"
+            android:layout_marginTop="50dp"
+            android:background="#add8e6"
+            android:text="@string/edit_order"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            />
+
+    </RelativeLayout>
+</LinearLayout>
