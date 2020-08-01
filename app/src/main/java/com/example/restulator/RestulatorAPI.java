@@ -7,6 +7,7 @@ import com.example.restulator.Models.Cook;
 import com.example.restulator.Models.Customer;
 import com.example.restulator.Models.Dish;
 import com.example.restulator.Models.DishType;
+import com.example.restulator.Models.EditOrder;
 import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.Order;
 import com.example.restulator.Models.PaymentOrder;
@@ -91,4 +92,10 @@ public interface RestulatorAPI {
 
    @POST("nonPaid/")
     Call<ApiResponse<MySqlResult>> addDishInOrder(@Body AddDishInOrder addDishInOrder);
+
+   @GET("tables/availableTables/")
+    Call<ApiResponse<Table>> getInactiveTables();
+
+    @PUT("nonPaid/")
+    Call<ApiResponse<MySqlResult>> updateOrder(@Body EditOrder editOrder);
 }

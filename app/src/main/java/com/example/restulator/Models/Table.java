@@ -1,5 +1,7 @@
 package com.example.restulator.Models;
 
+import androidx.annotation.NonNull;
+
 // Model to get information of all tables.
 public class Table {
 
@@ -7,6 +9,15 @@ public class Table {
         this.id = id;
         this.capacity = capacity;
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return ""+id;
+    }
+
+    public Table(int id) {
+        this.id = id;
     }
 
     public enum TableStatus{
