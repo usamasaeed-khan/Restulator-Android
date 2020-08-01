@@ -137,6 +137,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
+
         >
         <TextView
             android:layout_width="wrap_content"
@@ -180,6 +181,7 @@
         android:layout_height="50dp"
         android:foregroundGravity="center"
         android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:gravity="center"
         >
 
@@ -191,7 +193,6 @@
             android:text="Edit"
             android:textColor="@color/textBackgroundColor"
             android:textSize="12dp"
-
             android:textStyle="bold" />
 
         <Button
