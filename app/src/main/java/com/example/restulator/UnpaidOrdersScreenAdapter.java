@@ -40,8 +40,8 @@ public class UnpaidOrdersScreenAdapter extends RecyclerView.Adapter<UnpaidOrders
         final UnpaidOrder unpaidOrderResponse = unpaidOrders[position];
         holder.OrderIdTextview.setText("Order#: "+ String.valueOf(unpaidOrderResponse.getId()));
         holder.CustomerNameTextView.setText("Customer: "+unpaidOrderResponse.getCustomer_name());
-        String totalBillString = "Total Bill: " + unpaidOrderResponse.getBill();
-        holder.OrderTotalTextView.setText(totalBillString);
+
+        holder.OrderTotalTextView.setText(String.valueOf(unpaidOrderResponse.getBill()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -31,17 +31,49 @@
 
 
         </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:orientation="vertical"
+        android:layout_toLeftOf="@+id/arrowIcon"
+        android:id="@+id/Price_block"
+        >
+
+        <TextView
+            android:id="@+id/OrderTotalLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif"
+            android:text="TOTAL BILL"
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
         <TextView
             android:id="@+id/OrderTotal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="right"
-            android:layout_alignParentRight="true"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            >
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        </TextView>
+
+
+    </LinearLayout>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:id="@+id/arrowIcon"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_arrow_right"
+        >
+
+    </ImageView>
 
 
 </RelativeLayout>

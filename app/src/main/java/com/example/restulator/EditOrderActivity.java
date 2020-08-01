@@ -42,13 +42,13 @@ public class EditOrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_order);
+//        setContentView(R.layout.activity_edit_order);
 
         waiterSpinner = findViewById(R.id.waiterSpinner);
         cookSpinner = findViewById(R.id.cookSpinner);
         orderStatusSpinner = findViewById(R.id.orderStatusSpinner);
-        tableNumberSpinner = findViewById(R.id.tableNumberSpinner);
-        editOrder = findViewById(R.id.editOrder);
+//        tableNumberSpinner = findViewById(R.id.tableNumberSpinner);
+//        editOrder = findViewById(R.id.editOrder);
 
         insertWaiterData();
         insertCookData();

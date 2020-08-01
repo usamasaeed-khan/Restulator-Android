@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Call<ApiResponse<Waiter>> call,@NonNull Throwable t) {
 
-                    // If incomplete, toast the error message.
+//                    If incomplete, toast the error message.
                     Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
 //                    progressBar.setVisibility(View.INVISIBLE);
                 }
