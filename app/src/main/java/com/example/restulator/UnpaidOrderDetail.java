@@ -22,6 +22,8 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.Order;
 import com.example.restulator.Models.UnpaidOrder;
+import com.example.restulator.Models.Waiter;
+import com.example.restulator.Models.WaiterData;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -73,6 +75,37 @@ public class UnpaidOrderDetail extends AppCompatActivity{
 //                }
 //            }
 //     });
+
+        editOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentFromUnpaidOrders = getIntent();
+                if(intentFromUnpaidOrders.getExtras() != null){
+                    unpaidOrder = (UnpaidOrder) intentFromUnpaidOrders.getSerializableExtra("UnpaidOrder");
+                    int order_id = unpaidOrder.getId();
+                    String order_status = unpaidOrder.getOrder_status();
+                    String waiter_name = unpaidOrder.getWaiter_name();
+                    int waiter_id = unpaidOrder.getWaiter_id();
+                    String cook_name = unpaidOrder.getCook_name();
+                    int cook_id = unpaidOrder.getCook_id();
+                    int table_number = unpaidOrder.getTable_number();
+
+                    Intent intent = new Intent(UnpaidOrderDetail.this, EditOrderActivity.class);
+                    intent.putExtra("order_id", order_id);
+                    intent.putExtra("order_status", order_status);
+                    intent.putExtra("waiter_name", waiter_name);
+                    intent.putExtra("waiter_id", waiter_id);
+                    intent.putExtra("cook_name", cook_name);
+                    intent.putExtra("cook_id", cook_id);
+                    intent.putExtra("table_number", table_number);
+
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Order Details Not Found" ,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         setDetails();
 
