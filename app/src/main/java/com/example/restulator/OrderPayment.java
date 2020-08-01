@@ -21,13 +21,21 @@ import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
 import com.example.restulator.Models.UnpaidOrder;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
-public class OrderPayment extends AppCompatActivity {
+import java.util.List;
+
+public class OrderPayment extends AppCompatActivity implements Validator.ValidationListener{
 
     PaymentOrder[] paymentOrders;
     RestulatorAPI apiInterface;
     TextView totalPriceTextview, taxTextview, billTextview, changeTextview;
+    private Validator validator;
+    @NotEmpty
     EditText paymentEdittext;
+
     PaymentUpdate paymentUpdate;
     Integer orderId;
 
@@ -35,6 +43,9 @@ public class OrderPayment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_payment);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
 
         Intent intentFromUnpaidOrderDetail = getIntent();
         orderId = intentFromUnpaidOrderDetail.getExtras().getInt("OrderId");
@@ -66,11 +77,6 @@ public class OrderPayment extends AppCompatActivity {
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
                             if(!String.valueOf(s).matches("")){
                                 float payment = Float.parseFloat(String.valueOf(s));
                                 paymentUpdate = new PaymentUpdate(payment);
@@ -85,6 +91,11 @@ public class OrderPayment extends AppCompatActivity {
                                 changeTextview.setText(String.valueOf(0));
 
                             }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
 
                         }
                     });
@@ -103,44 +114,55 @@ public class OrderPayment extends AppCompatActivity {
     }
 
     public void makePayment(View view) {
+        validator.validate();
+
+    }
+
+    @Override
+    public void onValidationSucceeded() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
         String accessToken = pref.getString("ACCESS_TOKEN", null);
 
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        if (paymentUpdate.getPayment() != 0.0f ){
 
-            Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
-            paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
-                @Override
-                public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
-                    if(response.body() != null ? response.body().getStatus() : false){
-                        Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
-                        startActivity(intent);
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
 
-                    }
+        Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
+        paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                if(response.body() != null ? response.body().getStatus() : false){
+                    Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
+                    startActivity(intent);
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
 
-                @Override
-                public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
                 }
-            });
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Please enter Payment Amount!",Toast.LENGTH_LONG).show();
-        }
+            }
 
-
+            @Override
+            public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
-//    public void viewDishes(View view) {
-//        Intent intent = new Intent(getApplicationContext(), OrderDishesActivity.class);
-//        intent.putExtra("PaymentOrders",  paymentOrders);
-//        startActivity(intent);
-//    }
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+            // Display error messages
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            }
+        }
+
+    }
+
 }
