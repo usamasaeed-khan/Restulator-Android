@@ -9,8 +9,9 @@
     <string name="maximum_dishes_that_can_be_added">Maximum Dishes that can be added:</string>
     <string name="add_order">Add Order</string>
     <string name="total_price">Total Price</string>
-    <string name="deleteAlertTitle">DELETE  ORDER</string>
+    <string name="deleteAlertTitle">DELETE ORDER</string>
     <string name="deleteAlertMessage">Are you sure you want to delete this order?</string>
+    <string name="edit_order">Edit Order</string>
 
     <string-array name="spinnerItems">
         <item>pending</item>
