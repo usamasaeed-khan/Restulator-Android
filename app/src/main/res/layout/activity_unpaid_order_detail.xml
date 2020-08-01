@@ -176,7 +176,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:foregroundGravity="center"
         android:orientation="horizontal"
@@ -198,12 +198,15 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ic_round_button"
-            android:text="Add"
-            android:id="@+id/addButton"
+            android:text="Veiw"
+            android:id="@+id/viewDishes"
+            android:onClick="viewOrderDishes"
             android:layout_toRightOf="@+id/editButton"
             android:textColor="@color/textBackgroundColor"
             android:textStyle="bold"
             android:textSize="12dp"/>
+
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -211,10 +214,12 @@
             android:text="Payment"
             android:id="@+id/paymentButton"
             android:onClick="orderPayment"
-            android:layout_toRightOf="@id/addButton"
+            android:layout_toRightOf="@id/viewDishes"
             android:textColor="@color/textBackgroundColor"
             android:textStyle="bold"
             android:textSize="12dp"/>
+
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

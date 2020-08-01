@@ -62,7 +62,7 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_dish_to_order);
+//        setContentView(R.layout.activity_add_dish_to_order);
 
         dishTypeSpinner = findViewById(R.id.dishTypeSpinner);
         dishSpinner = findViewById(R.id.dishSpinner);
@@ -70,7 +70,7 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
         dishPrice = findViewById(R.id.originalPrice);
         dishTotalPrice = findViewById(R.id.calculatedPrice);
         possibleDishes = findViewById(R.id.approxDishes);
-        addDish = findViewById(R.id.addDish);
+//        addDish = findViewById(R.id.addDish);
         validator = new Validator(this);
         validator.setValidationListener(this);
 

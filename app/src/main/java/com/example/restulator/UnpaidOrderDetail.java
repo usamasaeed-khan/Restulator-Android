@@ -52,27 +52,27 @@ public class UnpaidOrderDetail extends AppCompatActivity{
         completeTimeTextView = findViewById(R.id.CompleteTimeData);
         orderStatusTextview = findViewById(R.id.OrderStatusData);
         billTextview = findViewById(R.id.BillData);
-        addDish = findViewById(R.id.addButton);
+//        addDish = findViewById(R.id.addDishes);
         editOrder = findViewById(R.id.editButton);
 
-        addDish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentFromUnpaidOrders = getIntent();
-                if(intentFromUnpaidOrders.getExtras() != null){
-                    unpaidOrder = (UnpaidOrder) intentFromUnpaidOrders.getSerializableExtra("UnpaidOrder");
-                    int order_id = unpaidOrder.getId();
-
-                    Intent intent = new Intent(UnpaidOrderDetail.this, AddDishToOrder.class);
-                    intent.putExtra("order_id", order_id);
-
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Order Details Not Found" ,Toast.LENGTH_LONG).show();
-                }
-            }
-     });
+//        addDish.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intentFromUnpaidOrders = getIntent();
+//                if(intentFromUnpaidOrders.getExtras() != null){
+//                    unpaidOrder = (UnpaidOrder) intentFromUnpaidOrders.getSerializableExtra("UnpaidOrder");
+//                    int order_id = unpaidOrder.getId();
+//
+//                    Intent intent = new Intent(UnpaidOrderDetail.this, AddDishToOrder.class);
+//                    intent.putExtra("order_id", order_id);
+//
+//                    startActivity(intent);
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "Order Details Not Found" ,Toast.LENGTH_LONG).show();
+//                }
+//            }
+//     });
 
         setDetails();
 
@@ -189,5 +189,12 @@ public class UnpaidOrderDetail extends AppCompatActivity{
         });
 
 
+    }
+
+
+    public void viewOrderDishes(View view) {
+        Intent intent = new Intent(getApplicationContext(), OrderDishesActivity.class);
+        intent.putExtra("OrderId",  OrderId);
+        startActivity(intent);
     }
 }

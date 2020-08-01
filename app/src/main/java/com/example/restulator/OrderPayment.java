@@ -138,9 +138,9 @@ public class OrderPayment extends AppCompatActivity {
 
     }
 
-    public void viewDishes(View view) {
-        Intent intent = new Intent(getApplicationContext(), OrderDishesActivity.class);
-        intent.putExtra("PaymentOrders",  paymentOrders);
-        startActivity(intent);
-    }
+//    public void viewDishes(View view) {
+//        Intent intent = new Intent(getApplicationContext(), OrderDishesActivity.class);
+//        intent.putExtra("PaymentOrders",  paymentOrders);
+//        startActivity(intent);
+//    }
 }
