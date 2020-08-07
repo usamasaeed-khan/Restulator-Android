@@ -46,7 +46,7 @@
             <Spinner
                 android:id="@+id/dishSpinner"
                 android:layout_marginTop="50dp"
-                android:layout_toRightOf="@id/dishType"
+                android:layout_toRightOf="@id/dish"
                 android:layout_width="300dp"
                 android:layout_below="@id/dishTypeSpinner"
                 android:layout_height="wrap_content"
