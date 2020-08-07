@@ -6,6 +6,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,9 @@ import com.example.restulator.Models.Cook;
 import com.example.restulator.Models.Customer;
 import com.example.restulator.Models.EditOrder;
 import com.example.restulator.Models.MySqlResult;
+import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.Table;
+import com.example.restulator.Models.UnpaidOrder;
 import com.example.restulator.Models.WaiterData;
 import com.google.gson.Gson;
 
@@ -42,13 +45,13 @@ public class EditOrderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_edit_order);
+        setContentView(R.layout.activity_edit_order);
 
         waiterSpinner = findViewById(R.id.waiterSpinner);
         cookSpinner = findViewById(R.id.cookSpinner);
         orderStatusSpinner = findViewById(R.id.orderStatusSpinner);
-//        tableNumberSpinner = findViewById(R.id.tableNumberSpinner);
-//        editOrder = findViewById(R.id.editOrder);
+        tableNumberSpinner = findViewById(R.id.tableNumberSpinner);
+        editOrder = findViewById(R.id.editOrder);
 
         insertWaiterData();
         insertCookData();
@@ -58,7 +61,13 @@ public class EditOrderActivity extends AppCompatActivity {
         editOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final int order_id = getIntent().getIntExtra("order_id",0);
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                String accessToken = pref.getString("ACCESS_TOKEN", null);
+
+                Intent intent = getIntent();
+                UnpaidOrder unpaidOrder = (UnpaidOrder) intent.getSerializableExtra("unPaidOrder");
+                final int order_id = unpaidOrder.getId();
+                
                 WaiterData waiter = (WaiterData) waiterSpinner.getSelectedItem();
                 int waiter_id = waiter.getId();
                 Cook cook = (Cook) cookSpinner.getSelectedItem();
@@ -68,7 +77,7 @@ public class EditOrderActivity extends AppCompatActivity {
                 String orderStatus = orderStatusSpinner.getSelectedItem().toString();
                 EditOrder editOrder = new EditOrder(order_id,orderStatus,cook_id,waiter_id,table_number);
                 apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-                Call<ApiResponse<MySqlResult>> call = apiInterface.updateOrder(editOrder);
+                Call<ApiResponse<MySqlResult>> call = apiInterface.updateOrder(editOrder,accessToken);
                 call.enqueue(new Callback<ApiResponse<MySqlResult>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
@@ -90,8 +99,10 @@ public class EditOrderActivity extends AppCompatActivity {
         });
     }
     public void insertWaiterData() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<WaiterData>> call = apiInterface.getWaiter();
+        Call<ApiResponse<WaiterData>> call = apiInterface.getWaiter(accessToken);
         call.enqueue(new Callback<ApiResponse<WaiterData>>() {
             @Override
             public void onResponse(Call<ApiResponse<WaiterData>> call, Response<ApiResponse<WaiterData>> response) {
@@ -111,8 +122,10 @@ public class EditOrderActivity extends AppCompatActivity {
 
                     waiterSpinner.setAdapter(adapter);
 
-                    final String waiter_name = getIntent().getStringExtra("waiter_name");
-                    final int waiter_id = getIntent().getIntExtra("waiter_id", 0);
+                    Intent intent = getIntent();
+                    UnpaidOrder unpaidOrder = (UnpaidOrder) intent.getSerializableExtra("unPaidOrder");
+                    final String waiter_name = unpaidOrder.getWaiter_name();
+                    final int waiter_id = unpaidOrder.getWaiter_id();
 
                     WaiterData waiterData1 = new WaiterData(waiter_id,waiter_name);
                         for (int i=0;i<waiterSpinner.getCount();i++){
@@ -139,8 +152,10 @@ public class EditOrderActivity extends AppCompatActivity {
         });
     }
     public void insertCookData() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<Cook>> call = apiInterface.getCook();
+        Call<ApiResponse<Cook>> call = apiInterface.getCook(accessToken);
 
         call.enqueue(new Callback<ApiResponse<Cook>>() {
             @Override
@@ -159,8 +174,10 @@ public class EditOrderActivity extends AppCompatActivity {
 
                     cookSpinner.setAdapter(adapter);
 
-                    final String cook_name = getIntent().getStringExtra("cook_name");
-                    final int cook_id = getIntent().getIntExtra("cook_id", 0);
+                    Intent intent = getIntent();
+                    UnpaidOrder unpaidOrder = (UnpaidOrder) intent.getSerializableExtra("unPaidOrder");
+                    final String cook_name = unpaidOrder.getCook_name();
+                    final int cook_id = unpaidOrder.getCook_id();
 
                     Cook cook1 = new Cook(cook_id,cook_name);
 
@@ -217,7 +234,9 @@ public class EditOrderActivity extends AppCompatActivity {
 
                     tableNumberSpinner.setAdapter(adapter);
 
-                    final int table_number = getIntent().getIntExtra("table_number",0);
+                    Intent intent = getIntent();
+                    UnpaidOrder unpaidOrder = (UnpaidOrder) intent.getSerializableExtra("unPaidOrder");
+                    final int table_number = unpaidOrder.getTable_number();
                     Toast.makeText(EditOrderActivity.this, "table number is "+ table_number, Toast.LENGTH_SHORT).show();
 
                     Table table1 = new Table(table_number);
@@ -264,7 +283,9 @@ public class EditOrderActivity extends AppCompatActivity {
     }
 
     public void insertOrderStatus() {
-        final String order_status = getIntent().getStringExtra("order_status");
+        Intent intent = getIntent();
+        UnpaidOrder unpaidOrder = (UnpaidOrder) intent.getSerializableExtra("unPaidOrder");
+        final String order_status = unpaidOrder.getOrder_status();
 
         for (int i=0;i<orderStatusSpinner.getCount();i++){
             if (orderStatusSpinner.getItemAtPosition(i).toString().equalsIgnoreCase(String.valueOf(order_status))){

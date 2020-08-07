@@ -8,7 +8,7 @@ public class PaymentOrder implements Serializable {
     float price;
     int type_id;
     String type;
-    float dish_quantity;
+    int dish_quantity;
     int order_id;
     String order_time;
     float bill;
@@ -18,7 +18,7 @@ public class PaymentOrder implements Serializable {
     public PaymentOrder() {
     }
 
-    public PaymentOrder(int dish_id, String dish_name, float price, int type_id, String type, float dish_quantity, int order_id, String order_time, float bill, float total_amount, float tax) {
+    public PaymentOrder(int dish_id, String dish_name, float price, int type_id, String type, int dish_quantity, int order_id, String order_time, float bill, float total_amount, float tax) {
         this.dish_id = dish_id;
         this.dish_name = dish_name;
         this.price = price;
@@ -72,11 +72,11 @@ public class PaymentOrder implements Serializable {
         this.type = type;
     }
 
-    public float getDish_quantity() {
+    public int getDish_quantity() {
         return dish_quantity;
     }
 
-    public void setDish_quantity(float dish_quantity) {
+    public void setDish_quantity(int dish_quantity) {
         this.dish_quantity = dish_quantity;
     }
 

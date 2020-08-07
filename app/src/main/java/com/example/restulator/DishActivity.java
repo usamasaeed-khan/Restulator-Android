@@ -7,6 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -101,12 +102,14 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
         addOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                String accessToken = pref.getString("ACCESS_TOKEN", null);
 
             Toast.makeText(DishActivity.this, "Total Amount is " + totalAmount, Toast.LENGTH_SHORT).show();
 
                 Order order = new Order(customerId,orderTime,completeTime,orderStatus,tableId,cookId,waiterId,totalAmount,dishes);
                 apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-                Call<ApiResponse<Order>> call = apiInterface.placeOrder(order);
+                Call<ApiResponse<Order>> call = apiInterface.placeOrder(order,accessToken);
 
                 call.enqueue(new Callback<ApiResponse<Order>>() {
                     @Override
@@ -123,8 +126,10 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
         });
     }
     public void insertDishTypeData() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<DishType>> call = apiInterface.getdishType();
+        Call<ApiResponse<DishType>> call = apiInterface.getdishType(accessToken);
 
         call.enqueue(new Callback<ApiResponse<DishType>>() {
             @Override
@@ -170,8 +175,10 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
         });
     }
     public void insertDishData(int type_id) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<Dish>> call = apiInterface.getDish(type_id);
+        Call<ApiResponse<Dish>> call = apiInterface.getDish(type_id,accessToken);
         call.enqueue(new Callback<ApiResponse<Dish>>() {
             @Override
             public void onResponse(Call<ApiResponse<Dish>> call, Response<ApiResponse<Dish>> response) {
@@ -207,8 +214,7 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Dish dish = dishList.get(i);
                 String dish_id = dish.getName();
-                float price = dish.getPrice();
-                String strPrice = String.valueOf(price);
+                String strPrice = String.valueOf(dish.getPrice());
 
                 dishPrice.setText(strPrice);
                 dishQuantity.setText("");
@@ -255,9 +261,7 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                 else {
 //                    Toast.makeText(DishActivity.this, "No input provided!", Toast.LENGTH_SHORT).show();
                 }
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -266,9 +270,11 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
     }
 
     public void checkIngredients(int dishId, int quantity) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         final CheckIngredients checkIngredients = new CheckIngredients(quantity);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<PossibleDishes>> call = apiInterface.checkIngredients(dishId,checkIngredients);
+        Call<ApiResponse<PossibleDishes>> call = apiInterface.checkIngredients(dishId,checkIngredients,accessToken);
         call.enqueue(new Callback<ApiResponse<PossibleDishes>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<PossibleDishes>> call, @NonNull Response<ApiResponse<PossibleDishes>> response) {
@@ -284,12 +290,11 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
 
                 }else{
 
-                    Toast.makeText(getApplicationContext(), "Possible are hello world",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Possible are",Toast.LENGTH_LONG).show();
 
                 }
 
             }
-
             @Override
             public void onFailure(@NonNull Call<ApiResponse<PossibleDishes>> call,@NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
@@ -310,7 +315,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                 HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
 
                 hmap.put(dish_id,quantity);
-
                     addDish.add(hmap);
 
                     Object[] arr = hmap.entrySet().toArray();
@@ -328,14 +332,14 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                             if(finalHmap.containsKey(keys[index])) {
                                 int prevValue = finalHmap.get(keys[index]);
                                 int total_dishes = prevValue + values[index];
-                                if(total_dishes <= possible) {
-                                    finalHmap.put(keys[index],prevValue+ values[index]);
-                                    Toast.makeText(this, "The total dishes are "+ total_dishes, Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(this, "Remaining Dishes Are "+ (possible - total_dishes), Toast.LENGTH_SHORT).show();
+                                if (total_dishes <= possible) {
+                                    dishQuantity.setError(null);
+                                    finalHmap.put(keys[index], prevValue + values[index]);
+                                    Toast.makeText(this, "The total dishes are " + total_dishes, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "Remaining Dishes Are " + (possible - total_dishes), Toast.LENGTH_SHORT).show();
 
-                                }
-                                else {
-                                    Toast.makeText(this, "The total dishes are "+ total_dishes, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(this, "The total dishes are " + total_dishes, Toast.LENGTH_SHORT).show();
                                     Toast.makeText(this, "Number Of Dishes is Greater than possible!", Toast.LENGTH_SHORT).show();
                                     dishQuantity.setError("Number of Dishes exceeds the possible Dishes");
                                 }
@@ -343,9 +347,7 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                             else {
                                 Toast.makeText(this, "First Time!!", Toast.LENGTH_SHORT).show();
                                 finalHmap.put(keys[index],values[index]);
-
                             }
-
                                 index++;
                         }
 //                    priceList.add(totalPrice);
@@ -376,11 +378,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                 Log.i("totalAmount is ", String.valueOf(totalAmount));
 
                 Toast.makeText(this, "addDIsh list is  " + addDish+ "\n" + "dishes are "+ dishes, Toast.LENGTH_LONG).show();
-
-//                priceList.add(totalPrice);
-//                Log.i("Price list is ", priceList.toString());
-//                totalAmount = calculateTotalAmount(priceList);
-//                Log.i("totalAmount is ", String.valueOf(totalAmount));
 
             }
             else {

@@ -8,6 +8,7 @@ import retrofit2.Response;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -160,13 +161,6 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
                 new DatePickerDialog(OrderActivity.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-//
-//        Bundle bundle = new Bundle();
-//        String waiterName = waiterSpinner.getSelectedItem().toString();
-//        Log.i("waiterName", waiterName);
-
-//        bundle.putString("waiterName", item);
-
         order_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,10 +172,11 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
 
 
     public void insertWaiterData() {
-
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
 
-        Call<ApiResponse<WaiterData>> call = apiInterface.getWaiter();
+        Call<ApiResponse<WaiterData>> call = apiInterface.getWaiter(accessToken);
 
 
         call.enqueue(new Callback<ApiResponse<WaiterData>>() {
@@ -234,8 +229,10 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
     }
 
     public void insertCookData() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<Cook>> call = apiInterface.getCook();
+        Call<ApiResponse<Cook>> call = apiInterface.getCook(accessToken);
 
         call.enqueue(new Callback<ApiResponse<Cook>>() {
             @Override
@@ -288,8 +285,10 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
     }
 
     public void insertCustomerData() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<Customer>> call = apiInterface.getCustomer();
+        Call<ApiResponse<Customer>> call = apiInterface.getCustomer(accessToken);
 
         call.enqueue(new Callback<ApiResponse<Customer>>() {
             @Override
@@ -326,9 +325,6 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Customer customer = customerList.get(i);
                 int customerId = customer.getId();
-//                Toast.makeText(getApplicationContext(), "Selected Customer Id "+ customerId, Toast.LENGTH_LONG).show();
-
-
             }
 
             @Override

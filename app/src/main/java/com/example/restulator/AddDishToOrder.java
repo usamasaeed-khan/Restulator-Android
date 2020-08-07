@@ -7,6 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -87,8 +88,10 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
 
 
     public void insertDishTypeData() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<DishType>> call = apiInterface.getdishType();
+        Call<ApiResponse<DishType>> call = apiInterface.getdishType(accessToken);
 
         call.enqueue(new Callback<ApiResponse<DishType>>() {
             @Override
@@ -144,8 +147,10 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
 
     }
     public void insertDishData(int type_id) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<Dish>> call = apiInterface.getDish(type_id);
+        Call<ApiResponse<Dish>> call = apiInterface.getDish(type_id,accessToken);
 
         call.enqueue(new Callback<ApiResponse<Dish>>() {
             @Override
@@ -253,9 +258,11 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
     }
 
     public void checkIngredients(int dishId, int quantity) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         final CheckIngredients checkIngredients = new CheckIngredients(quantity);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-        Call<ApiResponse<PossibleDishes>> call = apiInterface.checkIngredients(dishId,checkIngredients);
+        Call<ApiResponse<PossibleDishes>> call = apiInterface.checkIngredients(dishId,checkIngredients,accessToken);
 
 
         call.enqueue(new Callback<ApiResponse<PossibleDishes>>() {
@@ -294,6 +301,8 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
 
     @Override
     public void onValidationSucceeded() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+        String accessToken = pref.getString("ACCESS_TOKEN", null);
         int possible = Integer.parseInt((String) possibleDishes.getText());
         int quantity = Integer.parseInt(String.valueOf(dishQuantity.getText()));
 
@@ -309,7 +318,7 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                 
                 final AddDishInOrder addDishInOrder = new AddDishInOrder(order_id,quantity,dish_id,totalPrice);
                 apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-                Call<ApiResponse<MySqlResult>> call = apiInterface.addDishInOrder(addDishInOrder);
+                Call<ApiResponse<MySqlResult>> call = apiInterface.addDishInOrder(addDishInOrder,accessToken);
                 
                 call.enqueue(new Callback<ApiResponse<MySqlResult>>() {
                     @Override
