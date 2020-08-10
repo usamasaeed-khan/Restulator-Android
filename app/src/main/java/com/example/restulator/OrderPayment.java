@@ -1,18 +1,27 @@
 package com.example.restulator;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.PixelCopy;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +29,7 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
+import com.example.restulator.Models.Review;
 import com.example.restulator.Models.UnpaidOrder;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -27,11 +37,84 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import java.util.List;
 
+
 public class OrderPayment extends AppCompatActivity implements Validator.ValidationListener{
 
+    class ReviewValidator implements Validator.ValidationListener{
+
+        @NotEmpty
+        private EditText review;
+        private AlertDialog dialogue;
+
+        private Validator validator;
+
+        public ReviewValidator(EditText review,AlertDialog dialogue) {
+            this.review = review;
+            this.dialogue = dialogue;
+            validator = new Validator(this);
+            validator.setValidationListener(this);
+        }
+
+        public void validate() {
+            validator.validate();
+        }
+
+        @Override
+        public void onValidationSucceeded() {
+            reviewObj = new Review(orderId,review.getText().toString(),(int) ratingBar.getRating());
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+            String accessToken = pref.getString("ACCESS_TOKEN", null);
+
+            apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
+
+
+            Call<ApiResponse<MySqlResult>> postReviewCall = apiInterface.postReview(reviewObj,accessToken);
+            postReviewCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                    if(response.body() != null ? response.body().getStatus() : false)
+                        Toast.makeText(getApplicationContext(), "Review Added Successfully", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getApplicationContext(), "Unable to add review", Toast.LENGTH_LONG).show();
+
+                    dialogue.dismiss();
+
+                }
+
+                @Override
+                public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+        }
+
+        @Override
+        public void onValidationFailed(List<ValidationError> errors) {
+            Toast.makeText(getApplicationContext(), "Please enter review!", Toast.LENGTH_LONG).show();
+            for (ValidationError error : errors) {
+                View view = error.getView();
+                String message = error.getCollatedErrorMessage(getApplicationContext());
+                // Display error messages
+                if (view instanceof EditText) {
+                    ((EditText) view).setError(message);
+                } else {
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+        }
+    }
+    private ReviewValidator reviewValidator;
     PaymentOrder[] paymentOrders;
     RestulatorAPI apiInterface;
+    Review reviewObj;
     TextView totalPriceTextview, taxTextview, billTextview, changeTextview;
+    Button reviewButton;
+    @NotEmpty
+    EditText reviewText;
+    RatingBar ratingBar;
     private Validator validator;
     @NotEmpty
     EditText paymentEdittext;
@@ -47,6 +130,8 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
         validator = new Validator(this);
         validator.setValidationListener(this);
 
+
+
         Intent intentFromUnpaidOrderDetail = getIntent();
         orderId = intentFromUnpaidOrderDetail.getExtras().getInt("OrderId");
 
@@ -55,6 +140,8 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
         billTextview = findViewById(R.id.BillData);
         paymentEdittext = findViewById(R.id.PaymentBox);
         changeTextview = findViewById(R.id.ChangeData);
+        reviewButton = findViewById(R.id.ReviewAddButton);
+
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
         String accessToken = pref.getString("ACCESS_TOKEN", null);
@@ -111,10 +198,12 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
         });
 
 
+
     }
 
     public void makePayment(View view) {
         validator.validate();
+
 
     }
 
@@ -136,7 +225,7 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Unsuccessful",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Payment Unsuccessful",Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -165,4 +254,37 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
 
     }
 
+    public void addReview(View view) {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.review_add_layout, null);
+
+        ratingBar = dialogLayout.findViewById(R.id.ratingBar);
+        reviewText = dialogLayout.findViewById(R.id.reviewText);
+        final AlertDialog builderSingle = new AlertDialog.Builder(this)
+                .setView(dialogLayout)
+                .setPositiveButton("Submit",null)
+                .setNegativeButton("Cancel",null)
+                .create();
+        reviewValidator = new ReviewValidator( reviewText,builderSingle);
+
+        builderSingle.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) { reviewValidator.validate();    }
+                });
+
+            }
+        });
+
+
+
+        builderSingle.show();
+
+    }
 }
