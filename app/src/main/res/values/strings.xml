@@ -12,6 +12,7 @@
     <string name="deleteAlertTitle">DELETE ORDER</string>
     <string name="deleteAlertMessage">Are you sure you want to delete this order?</string>
     <string name="edit_order">Edit Order</string>
+    <string name="add_dish">Add Dish</string>
 
     <string-array name="spinnerItems">
         <item>pending</item>

@@ -63,7 +63,7 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_add_dish_to_order);
+        setContentView(R.layout.activity_add_dish_to_order);
 
         dishTypeSpinner = findViewById(R.id.dishTypeSpinner);
         dishSpinner = findViewById(R.id.dishSpinner);
@@ -71,13 +71,12 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
         dishPrice = findViewById(R.id.originalPrice);
         dishTotalPrice = findViewById(R.id.calculatedPrice);
         possibleDishes = findViewById(R.id.approxDishes);
-//        addDish = findViewById(R.id.addDish);
+        addDish = findViewById(R.id.addDish);
         validator = new Validator(this);
         validator.setValidationListener(this);
 
         insertDishTypeData();
         calculateTotalPrice();
-
         addDish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +84,6 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
             }
         });
     }
-
 
     public void insertDishTypeData() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
@@ -99,8 +97,6 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                 if(response.body() != null ? response.body().getStatus() : false) {
                     dishTypeData = response.body().getData();
 
-                    Log.i("Success dishType", new Gson().toJson(dishTypeData));
-
                     for(DishType dishType: dishTypeData) {
                         String type = dishType.getType();
                         int type_id = dishType.getType_id();
@@ -108,21 +104,15 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                         DishType dish = new DishType(type, type_id);
                         dishTypeList.add(dish);
                     }
-
-                    Log.i("Success dishType list", dishTypeList.toString());
-
                     ArrayAdapter<DishType> adapter = new ArrayAdapter(getApplicationContext(),
                             android.R.layout.simple_spinner_item, dishTypeList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     dishTypeSpinner.setAdapter(adapter);
-
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<DishType>> call, Throwable t) {
-
             }
         });
 
@@ -131,20 +121,14 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 DishType dishType = dishTypeList.get(i);
                 int type_id = dishType.getType_id();
-                String type = dishType.getType();
-//                Toast.makeText(getApplicationContext(), "Selected DishType "+ type +"\n" + "Id is " + type_id , Toast.LENGTH_LONG).show();
                 dishList.clear();
                 dishSpinner.setAdapter(null);
                 insertDishData(type_id);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
-
     }
     public void insertDishData(int type_id) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
@@ -158,8 +142,6 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                 if(response.body() != null ? response.body().getStatus() : false) {
                     dishData = response.body().getData();
 
-                    Log.i("Success dishType", new Gson().toJson(dishData));
-
                     for(Dish dishes: dishData) {
                         String dishName = dishes.getName();
                         int dishId = dishes.getId();
@@ -169,21 +151,15 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                         Dish dish = new Dish(dishId,dishName, dishDescription,dishPrice);
                         dishList.add(dish);
                     }
-
-                    Log.i("Success dish list", dishList.toString());
-
                     ArrayAdapter<DishType> adapter = new ArrayAdapter(getApplicationContext(),
                             android.R.layout.simple_spinner_item, dishList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     dishSpinner.setAdapter(adapter);
-
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<Dish>> call, Throwable t) {
-
             }
         });
 
@@ -191,68 +167,45 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Dish dish = dishList.get(i);
-                String dish_id = dish.getName();
                 float price = dish.getPrice();
                 String strPrice = String.valueOf(price);
-
-//                Toast.makeText(getApplicationContext(), "Selected DishId "+ dish_id +"\n" + "Price is " + price , Toast.LENGTH_LONG).show();
 
                 dishPrice.setText(strPrice);
                 dishQuantity.setText("");
                 dishTotalPrice.setText("");
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
     }
 
     public void calculateTotalPrice() {
         dishQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                Toast.makeText(DishActivity.this, "You entered dish Qauntity", Toast.LENGTH_SHORT).show();
                 CharSequence d = dishPrice.getText();
-
                 float price= Float.valueOf(d.toString());
 
                 if(dishQuantity.getText().length() != 0 ) {
                     String q = dishQuantity.getText().toString();
-
                     int quantity = Integer.parseInt(q);
-
                     totalPrice = price * quantity;
-
-//                    Toast.makeText(DishActivity.this, "The total price is " + totalPrice, Toast.LENGTH_SHORT).show();
-
                     String total_price = String.valueOf(totalPrice);
-
                     dishTotalPrice.setText(total_price);
 
                     Dish dish = (Dish) dishSpinner.getSelectedItem();
                     int dishId = dish.getId();
 
                     checkIngredients(dishId, quantity);
-
                 }
-                else {
-//                    Toast.makeText(DishActivity.this, "No input provided!", Toast.LENGTH_SHORT).show();
-                }
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
     }
@@ -274,29 +227,21 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                     check = response.body().getData()[0];
 
                     Double possibeDish = check.getPossible();
-                    Log.i("Success check is ", possibeDish.toString());
-
                     int floorPossible = (int) Math.floor(possibeDish);
 
                     possibleDishes.setText(String.valueOf(floorPossible));
 
-//                    Toast.makeText(getApplicationContext(), "Possible "+ possibeDish,Toast.LENGTH_LONG).show();
-
-
-                }else{
-
-                    Toast.makeText(getApplicationContext(), "Possible are hello world",Toast.LENGTH_LONG).show();
-
                 }
+                else{
 
+                    Toast.makeText(getApplicationContext(), "Failed to provide Data",Toast.LENGTH_LONG).show();
+                }
             }
-
             @Override
             public void onFailure(@NonNull Call<ApiResponse<PossibleDishes>> call,@NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     @Override
@@ -309,9 +254,6 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
         if(possible > 0) {
             if(quantity <= possible) {
                 final int order_id = getIntent().getIntExtra("order_id",0);
-                Toast.makeText(this, "Order_id is " + order_id, Toast.LENGTH_LONG).show();
-                Toast.makeText(this, "Total price " + totalPrice, Toast.LENGTH_LONG).show();
-
 
                 Dish dish = (Dish) dishSpinner.getSelectedItem();
                 int dish_id = dish.getId();
@@ -324,7 +266,7 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
                     @Override
                     public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
                         if(response.body() != null ? response.body().getStatus() : false){
-                            Toast.makeText(getApplicationContext(), "Order Placed Successful!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Dish Added Successfully!",Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
                             startActivity(intent);
                         }
@@ -336,7 +278,7 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
 
                     @Override
                     public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
-                        Toast.makeText(AddDishToOrder.this, "Chal nikal!!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddDishToOrder.this, "Sorry There was some error while processing", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -352,7 +294,6 @@ public class AddDishToOrder extends AppCompatActivity implements Validator.Valid
             dishQuantity.setError("Dish is not available! Please select some other dish");
             Toast.makeText(this, "Dish is not available! Please select some other dish", Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override

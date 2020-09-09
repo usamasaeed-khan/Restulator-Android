@@ -71,8 +71,6 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
         setContentView(R.layout.activity_order);
         validator = new Validator(this);
         validator.setValidationListener(this);
-
-
         waiterSpinner = findViewById(R.id.waiterSpinner);
         cookSpinner = findViewById(R.id.cookSpinner);
         customerSpinner = findViewById(R.id.customerSpinner);
@@ -81,14 +79,12 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
         order_details = findViewById(R.id.addOrderDetails);
         orderStatusSpinner = findViewById(R.id.orderStatusSpinner);
 
-
         insertWaiterData();
         insertCookData();
         insertCustomerData();
 
         order_time.setInputType(InputType.TYPE_NULL);
         complete_time.setInputType(InputType.TYPE_NULL);
-
 
         order_time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +117,6 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
                       new TimePickerDialog(OrderActivity.this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
                   }
               };
-
               new DatePickerDialog(OrderActivity.this, dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
@@ -167,57 +162,40 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
                 validator.validate();
             }
         });
-
     }
-
 
     public void insertWaiterData() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
         String accessToken = pref.getString("ACCESS_TOKEN", null);
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-
         Call<ApiResponse<WaiterData>> call = apiInterface.getWaiter(accessToken);
-
-
         call.enqueue(new Callback<ApiResponse<WaiterData>>() {
             @Override
             public void onResponse(Call<ApiResponse<WaiterData>> call, Response<ApiResponse<WaiterData>> response) {
                 if (response.body() != null ? response.body().getStatus() : false) {
                     waiterData = response.body().getData();
 
-                    Log.i("Success", new Gson().toJson(waiterData));
-
                 for(WaiterData waiters: waiterData) {
                         String waitersName = waiters.getName();
                         int waitersId = waiters.getId();
-
                         WaiterData waiter = new WaiterData(waitersId, waitersName);
                         waiterList.add(waiter);
                     }
-
                     ArrayAdapter<WaiterData> adapter = new ArrayAdapter(getApplicationContext(),
                             android.R.layout.simple_spinner_item,waiterList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     waiterSpinner.setAdapter(adapter);
-
                 }
-
             }
-
             @Override
             public void onFailure(Call<ApiResponse<WaiterData>> call, Throwable t) {
 
             }
         });
-
         waiterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                WaiterData waiter = waiterList.get(i);
-                int waiterId = waiter.getId();
-                String waiterName = waiter.getName();
-//                Toast.makeText(getApplicationContext(), "Selected Waiter Name "+ waiterName +"\n" + "Id is " + waiterId , Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -239,25 +217,19 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
             public void onResponse(Call<ApiResponse<Cook>> call, Response<ApiResponse<Cook>> response) {
                 if(response.body() != null ? response.body().getStatus(): false) {
                     cookData = response.body().getData();
-                    Log.i("Cook names", new Gson().toJson(waiterData));
 
                     for(Cook cooks: cookData){
                         int cookId = cooks.getId();
                         String cookName = cooks.getName();
-
                         Cook cook = new Cook(cookId, cookName);
                         cookList.add(cook);
                     }
-
                     ArrayAdapter<Cook> adapter = new ArrayAdapter(getApplicationContext(),
                             android.R.layout.simple_spinner_item,cookList);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
                     cookSpinner.setAdapter(adapter);
-
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<Cook>> call, Throwable t) {
 
@@ -267,21 +239,12 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
         cookSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               Cook cook = cookList.get(i);
-               int cookId = cook.getId();
-               String cookName = cook.getName();
-//               Toast.makeText(getApplicationContext(), "Selected Cook Id"+ cookId, Toast.LENGTH_LONG).show();
-
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
-
     }
 
     public void insertCustomerData() {
@@ -295,12 +258,10 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
             public void onResponse(Call<ApiResponse<Customer>> call, Response<ApiResponse<Customer>> response) {
                 if(response.body() != null ? response.body().getStatus() : false) {
                     customerData = response.body().getData();
-                    Log.i("Customer names", new Gson().toJson(customerData));
 
                     for(Customer customers: customerData){
                         int customerId = customers.getId();
                         String customerName = customers.getName();
-
                         Customer customer = new Customer(customerId, customerName);
                         customerList.add(customer);
                     }
@@ -309,32 +270,22 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
                             android.R.layout.simple_spinner_item,customerList);
 
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
                     customerSpinner.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<Customer>> call, Throwable t) {
-
             }
         });
-
         customerSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Customer customer = customerList.get(i);
-                int customerId = customer.getId();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
     }
-
     @Override
     public void onValidationSucceeded() {
         String orderTime = order_time.getText().toString();
@@ -369,19 +320,16 @@ public class OrderActivity extends AppCompatActivity implements Validator.Valida
                 intent.putExtra("table_id", tableId);
                 intent.putExtra("orderStatus", orderStatus);
 
-
                 startActivity(intent);
-
             }
             else {
-                Toast.makeText(this, "Complete Time should be Greater than Order Time", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Order Complete Time should be Greater than Order Time", Toast.LENGTH_LONG).show();
                 complete_time.setError("Complete Time should be Greater than Order Time");
 
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

@@ -155,9 +155,9 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/orderCompleteTextView"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="80dp"
             android:background="#add8e6"
-            android:text="Add Dish"
+            android:text="Save Order Details"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             />

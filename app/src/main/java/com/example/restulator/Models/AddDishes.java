@@ -8,11 +8,6 @@ public class AddDishes {
         return dish_id;
     }
 
-//    public AddDishes(int dish_id, int dish_quantity) {
-//        this.dish_id = dish_id;
-//        this.dish_quantity = dish_quantity;
-//    }
-
     public void setDish_id(int dish_id) {
         this.dish_id = dish_id;
     }

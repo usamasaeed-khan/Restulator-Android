@@ -143,8 +143,6 @@ public class EditOrderActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 WaiterData waiter = waiterList.get(i);
-                int waiterId = waiter.getId();
-                String waiterName = waiter.getName();
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -198,16 +196,9 @@ public class EditOrderActivity extends AppCompatActivity {
         cookSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Cook cook = cookList.get(i);
-                int cookId = cook.getId();
-                String cookName = cook.getName();
-//               Toast.makeText(getApplicationContext(), "Selected Cook Id"+ cookId, Toast.LENGTH_LONG).show();
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
     }
@@ -237,11 +228,8 @@ public class EditOrderActivity extends AppCompatActivity {
                     Intent intent = getIntent();
                     UnpaidOrder unpaidOrder = (UnpaidOrder) intent.getSerializableExtra("unPaidOrder");
                     final int table_number = unpaidOrder.getTable_number();
-                    Toast.makeText(EditOrderActivity.this, "table number is "+ table_number, Toast.LENGTH_SHORT).show();
 
                     Table table1 = new Table(table_number);
-                    Toast.makeText(EditOrderActivity.this, "The id is "+ table1.getId(), Toast.LENGTH_SHORT).show();
-
                     if(tableList.contains(table1)) {
                         for (int i=0;i<tableNumberSpinner.getCount();i++){
                             if (tableNumberSpinner.getItemAtPosition(i).toString().equalsIgnoreCase(String.valueOf(table1))){
@@ -252,27 +240,21 @@ public class EditOrderActivity extends AppCompatActivity {
                     else {
                         tableList.add(table1);
                         Table compareValue = table1;
-                        Toast.makeText(EditOrderActivity.this, "Not Contains!!", Toast.LENGTH_SHORT).show();
                         if (compareValue != null) {
                             int spinnerPosition = adapter.getPosition(compareValue);
                             tableNumberSpinner.setSelection(spinnerPosition);
                         }
-
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<Table>> call, Throwable t) {
-
             }
         });
 
         tableNumberSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Table table = tableList.get(i);
-                int cookId = table.getId();
             }
 
             @Override

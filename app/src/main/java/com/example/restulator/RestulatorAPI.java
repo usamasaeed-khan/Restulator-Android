@@ -87,7 +87,7 @@ public interface RestulatorAPI {
     Call<ApiResponse<Dish>> getDish(@Path("dishType") int id, @Header("authorization") String authorization);
 
     @POST("order/")
-    Call<ApiResponse<Order>> placeOrder(@Body Order order, @Header("authorization") String authorization);
+    Call<ApiResponse<MySqlResult>> placeOrder(@Body Order order, @Header("authorization") String authorization);
 
     @POST("ingredients/check/quantity/{dishId}")
     Call<ApiResponse<PossibleDishes>> checkIngredients(@Path("dishId") int dishId, @Body CheckIngredients checkIngredients, @Header("authorization") String authorization);

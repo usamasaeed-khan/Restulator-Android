@@ -25,6 +25,7 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.CheckIngredients;
 import com.example.restulator.Models.Dish;
 import com.example.restulator.Models.DishType;
+import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.Order;
 import com.example.restulator.Models.PossibleDishes;
 import com.google.gson.Gson;
@@ -57,6 +58,7 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
     List<DishType> dishTypeList = new ArrayList<>();
     List<Dish> dishList = new ArrayList<>();
     public static int[][] dishes;
+    HashMap<Integer, Integer> finalHmap = new HashMap<Integer, Integer>();
     public List<HashMap<Integer, Integer>> addDish = new ArrayList<HashMap<Integer, Integer>>();
     private Validator validator;
     public static float totalPrice = 0;
@@ -88,7 +90,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
         possibleDishes = findViewById(R.id.approxDishes);
         addDishes = findViewById(R.id.addDishes);
 
-
         insertDishTypeData();
         calculateTotalPrice();
 
@@ -102,26 +103,41 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
         addOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-                String accessToken = pref.getString("ACCESS_TOKEN", null);
+                if (dishQuantity.getText().toString().length() == 0 && dishes == null) {
+                    dishQuantity.setError("Please Specify Dish Quantity");
+                }
+                else if(dishes == null) {
+                    dishQuantity.setError("Please click on Add Dish To Order button");
+                }
+                else {
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
+                    String accessToken = pref.getString("ACCESS_TOKEN", null);
 
-            Toast.makeText(DishActivity.this, "Total Amount is " + totalAmount, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DishActivity.this, "Total Amount is " + totalAmount, Toast.LENGTH_SHORT).show();
 
-                Order order = new Order(customerId,orderTime,completeTime,orderStatus,tableId,cookId,waiterId,totalAmount,dishes);
-                apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
-                Call<ApiResponse<Order>> call = apiInterface.placeOrder(order,accessToken);
+                    Order order = new Order(customerId, orderTime, completeTime, orderStatus, tableId, cookId, waiterId, totalAmount, dishes);
+                    apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
+                    Call<ApiResponse<MySqlResult>> call = apiInterface.placeOrder(order, accessToken);
 
-                call.enqueue(new Callback<ApiResponse<Order>>() {
-                    @Override
-                    public void onResponse(Call<ApiResponse<Order>> call, Response<ApiResponse<Order>> response) {
-                        Toast.makeText(DishActivity.this, "Your Order has been placed", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(DishActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                    @Override
-                    public void onFailure(Call<ApiResponse<Order>> call, Throwable t) {
-                    }
-                });
+                    call.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                            if(response.body() != null ? response.body().getStatus() : false){
+                                Toast.makeText(getApplicationContext(), "Order Placed Successfully!",Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Unsuccessful", Toast.LENGTH_LONG).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                        }
+                    });
+                }
             }
         });
     }
@@ -136,8 +152,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
             public void onResponse(Call<ApiResponse<DishType>> call, Response<ApiResponse<DishType>> response) {
                 if(response.body() != null ? response.body().getStatus() : false) {
                     dishTypeData = response.body().getData();
-
-                    Log.i("Success dishType", new Gson().toJson(dishTypeData));
 
                     for(DishType dishType: dishTypeData) {
                         String type = dishType.getType();
@@ -154,7 +168,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
             }
             @Override
             public void onFailure(Call<ApiResponse<DishType>> call, Throwable t) {
-
             }
         });
 
@@ -163,7 +176,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 DishType dishType = dishTypeList.get(i);
                 int type_id = dishType.getType_id();
-                String type = dishType.getType();
                 dishList.clear();
                 dishSpinner.setAdapter(null);
                 insertDishData(type_id);
@@ -199,10 +211,8 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     dishSpinner.setAdapter(adapter);
-
                 }
             }
-
             @Override
             public void onFailure(Call<ApiResponse<Dish>> call, Throwable t) {
 
@@ -213,7 +223,6 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Dish dish = dishList.get(i);
-                String dish_id = dish.getName();
                 String strPrice = String.valueOf(dish.getPrice());
 
                 dishPrice.setText(strPrice);
@@ -225,41 +234,30 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
 
             }
         });
-
     }
 
     public void calculateTotalPrice() {
         dishQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 CharSequence d = dishPrice.getText();
-
                 float price= Float.valueOf(d.toString());
 
                 if(dishQuantity.getText().length() != 0 ) {
                     String q = dishQuantity.getText().toString();
-
                     int quantity = Integer.parseInt(q);
-
                     totalPrice = price * quantity;
-
                     String total_price = String.valueOf(totalPrice);
-
                     dishTotalPrice.setText(total_price);
 
                     Dish dish = (Dish) dishSpinner.getSelectedItem();
                     int dishId = dish.getId();
 
                     checkIngredients(dishId, quantity);
-
-                }
-                else {
-//                    Toast.makeText(DishActivity.this, "No input provided!", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -278,22 +276,15 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
         call.enqueue(new Callback<ApiResponse<PossibleDishes>>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse<PossibleDishes>> call, @NonNull Response<ApiResponse<PossibleDishes>> response) {
-
-                // Checking api response status.
                 if(response.body() != null ? response.body().getStatus() : false){
                     check = response.body().getData()[0];
-
                     Double possibeDish = check.getPossible();
                     int floorPossible = (int) Math.floor(possibeDish);
-
                     possibleDishes.setText(String.valueOf(floorPossible));
-
-                }else{
-
-                    Toast.makeText(getApplicationContext(), "Possible are",Toast.LENGTH_LONG).show();
-
                 }
-
+                else {
+                    Toast.makeText(getApplicationContext(), "Failed to get the data",Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onFailure(@NonNull Call<ApiResponse<PossibleDishes>> call,@NonNull Throwable t) {
@@ -305,22 +296,29 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
     public void onValidationSucceeded() {
         int possible = Integer.parseInt((String) possibleDishes.getText());
         int quantity = Integer.parseInt(String.valueOf(dishQuantity.getText()));
+        Dish dish = (Dish) dishSpinner.getSelectedItem();
+        int dish_id = dish.getId();
+        HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
 
         if(possible > 0) {
             if(quantity <= possible) {
-                Toast.makeText(this, "We got it right!", Toast.LENGTH_LONG).show();
-
-                Dish dish = (Dish) dishSpinner.getSelectedItem();
-                int dish_id = dish.getId();
-                HashMap<Integer, Integer> hmap = new HashMap<Integer, Integer>();
-
-                hmap.put(dish_id,quantity);
+                if(finalHmap.containsKey(dish_id) && (finalHmap.get(dish_id) + quantity) > possible) {
+                    int total = (finalHmap.get(dish_id) + quantity);
+                    Toast.makeText(this, "Total is " + total, Toast.LENGTH_SHORT).show();
+                    dishQuantity.setError("Your Total count for this dish is" + total + "Please provide dish count less than or equal to "+ possible);
+                    dishQuantity.setText("");
+                    dishTotalPrice.setText("");
+                }
+                else {
+                    hmap.put(dish_id,quantity);
                     addDish.add(hmap);
+                    priceList.add(totalPrice);
+                    totalAmount = calculateTotalAmount(priceList);
+                    dishQuantity.setText("");
+                    dishTotalPrice.setText("");
+                }
 
-                    Object[] arr = hmap.entrySet().toArray();
-
-                HashMap<Integer, Integer> finalHmap = new HashMap<Integer, Integer>();
-
+                finalHmap = new HashMap<>();
                 for(int i=0; i< addDish.size(); i++) {
                         Integer[] keys = new Integer[addDish.get(i).size()];
                         Integer[] values = new Integer[addDish.get(i).size()];
@@ -331,34 +329,14 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
 
                             if(finalHmap.containsKey(keys[index])) {
                                 int prevValue = finalHmap.get(keys[index]);
-                                int total_dishes = prevValue + values[index];
-                                if (total_dishes <= possible) {
-                                    dishQuantity.setError(null);
-                                    finalHmap.put(keys[index], prevValue + values[index]);
-                                    Toast.makeText(this, "The total dishes are " + total_dishes, Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(this, "Remaining Dishes Are " + (possible - total_dishes), Toast.LENGTH_SHORT).show();
-
-                                } else {
-                                    Toast.makeText(this, "The total dishes are " + total_dishes, Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(this, "Number Of Dishes is Greater than possible!", Toast.LENGTH_SHORT).show();
-                                    dishQuantity.setError("Number of Dishes exceeds the possible Dishes");
-                                }
+                                finalHmap.put(keys[index], prevValue + values[index]);
                             }
                             else {
-                                Toast.makeText(this, "First Time!!", Toast.LENGTH_SHORT).show();
                                 finalHmap.put(keys[index],values[index]);
                             }
                                 index++;
                         }
-//                    priceList.add(totalPrice);
-//                    Log.i("Price list is ", priceList.toString());
-//                    totalAmount = calculateTotalAmount(priceList);
-//                    Log.i("totalAmount is ", String.valueOf(totalAmount));
-//                    Log.i("First Time Final Hmap ", String.valueOf(finalHmap));
-//
-
                 }
-                Object[] arr2 = finalHmap.entrySet().toArray();
                 dishes = new int[finalHmap.size()][2];
 
                 int index = 0;
@@ -366,24 +344,10 @@ public class DishActivity extends AppCompatActivity implements Validator.Validat
                     dishes[index] = new int[] {mapEntry.getKey(), mapEntry.getValue()};
                     index++;
                 }
-
-                for (int i = 0; i < dishes.length; i++)
-                    System.out.println("final Arr "+Arrays.toString(dishes[i]));
-                
-                Log.i("cheetos", addDish.toString());
-//                System.out.println("cheetah"+ Arrays.toString(addDish.get(0)));
-                System.out.println("Add Dish: "+ addDish);
-                System.out.println("EntrySet: "+ Arrays.toString(arr));
-                System.out.println("FinalHmap: "+ Arrays.toString(arr2));
-                Log.i("totalAmount is ", String.valueOf(totalAmount));
-
-                Toast.makeText(this, "addDIsh list is  " + addDish+ "\n" + "dishes are "+ dishes, Toast.LENGTH_LONG).show();
-
             }
             else {
                 dishQuantity.setError("Dishes Quantity should be less than or equal to "+ possible);
                 Toast.makeText(this, "Dishes Quantity should be less than or equal to "+ possible, Toast.LENGTH_LONG).show();
-
             }
         }
         else {

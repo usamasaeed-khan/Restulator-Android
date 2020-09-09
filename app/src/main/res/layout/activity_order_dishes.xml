@@ -9,12 +9,21 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/recyclerview_OrderDishes">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
-
+    <Button
+        android:id="@+id/AddDishToOrder"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:background="#add8e6"
+        android:text="@string/add_dish"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        />
 
 </LinearLayout>

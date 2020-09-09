@@ -13,8 +13,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.restulator.Models.AddDishInOrder;
 import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
@@ -24,7 +27,8 @@ PaymentOrder[] paymentOrders;
 RestulatorAPI apiInterface;
 RecyclerView orderDishesRecyclerView;
 int orderId;
- 
+Button addDish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,10 +37,20 @@ int orderId;
         orderDishesRecyclerView = findViewById(R.id.recyclerview_OrderDishes);
         orderDishesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderDishesRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        addDish = findViewById(R.id.AddDishToOrder);
 
         Intent intentFromUnpaidOrderDetail = getIntent();
         orderId = intentFromUnpaidOrderDetail.getExtras().getInt("OrderId");
 
+        addDish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(OrderDishesActivity.this, "Your Order has been placed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(OrderDishesActivity.this, AddDishToOrder.class);
+                intent.putExtra("order_id", orderId);
+                startActivity(intent);
+            }
+        });
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
         String accessToken = pref.getString("ACCESS_TOKEN", null);
@@ -48,11 +62,6 @@ int orderId;
                 if(response.body() != null ? response.body().getStatus() : false){
                     paymentOrders = response.body().getData();
                     orderDishesRecyclerView.setAdapter(new OrderDishesAdapter(paymentOrders,getApplicationContext()));
-
-
-
-
-
                 }
             }
 
@@ -61,22 +70,5 @@ int orderId;
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-
-
-//        Intent intentFromUnpaidOrder = getIntent();
-//        if(intentFromUnpaidOrder.getExtras() != null){
-//            paymentOrders = (PaymentOrder[]) intentFromUnpaidOrder.getSerializableExtra("PaymentOrders");
-//            orderDishesRecyclerView.setAdapter(new OrderDishesAdapter(paymentOrders,getApplicationContext()));
-//
-//        }
-//        else{
-//            Toast.makeText(getApplicationContext(), "Dishes not Found",Toast.LENGTH_LONG).show();
-//
-//        }
-
-
     }
 }
