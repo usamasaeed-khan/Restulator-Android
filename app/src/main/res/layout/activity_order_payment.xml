@@ -141,6 +141,7 @@
             android:background="@drawable/ic_round_button"
             android:text="Add Review"
             android:id="@+id/ReviewAddButton"
+            android:onClick="addReview"
             android:layout_marginLeft="30dp"
             android:layout_toRightOf="@+id/AddPaymentButton"
             android:textColor="@color/textBackgroundColor"

@@ -14,6 +14,7 @@ import com.example.restulator.Models.Order;
 import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
 import com.example.restulator.Models.PossibleDishes;
+import com.example.restulator.Models.Review;
 import com.example.restulator.Models.Table;
 import com.example.restulator.Models.UnpaidOrder;
 import com.example.restulator.Models.User;
@@ -61,6 +62,12 @@ public interface RestulatorAPI {
             @Path("orderId") Integer orderId,
             @Body PaymentUpdate paymentUpdate,
             @Header("authorization") String authorization);
+
+    @POST("review/")
+    Call<ApiResponse<MySqlResult>> postReview(
+            @Body Review reviewObj,
+            @Header("authorization") String authorization
+            );
 
     @DELETE("nonPaid/{orderId}")
     Call<ApiResponse<MySqlResult>> deleteOrder(
