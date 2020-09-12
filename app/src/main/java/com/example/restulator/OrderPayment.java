@@ -38,7 +38,7 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import java.util.List;
 
 
-public class OrderPayment extends AppCompatActivity implements Validator.ValidationListener{
+public class OrderPayment extends BaseActivity implements Validator.ValidationListener{
 
     class ReviewValidator implements Validator.ValidationListener{
 
@@ -112,10 +112,9 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
     Review reviewObj;
     TextView totalPriceTextview, taxTextview, billTextview, changeTextview;
     Button reviewButton;
-    @NotEmpty
     EditText reviewText;
     RatingBar ratingBar;
-    private Validator validator;
+    private Validator validator_payment;
     @NotEmpty
     EditText paymentEdittext;
 
@@ -127,8 +126,8 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_payment);
 
-        validator = new Validator(this);
-        validator.setValidationListener(this);
+        validator_payment = new Validator(this);
+        validator_payment.setValidationListener(this);
 
 
 
@@ -202,7 +201,7 @@ public class OrderPayment extends AppCompatActivity implements Validator.Validat
     }
 
     public void makePayment(View view) {
-        validator.validate();
+        validator_payment.validate();
 
 
     }

@@ -23,7 +23,7 @@
         android:background="#add8e6"
         android:text="@string/add_dish"
         android:textColor="#FFFFFF"
-        android:textSize="22sp"
+        android:textSize="16sp"
         />
 
 </LinearLayout>

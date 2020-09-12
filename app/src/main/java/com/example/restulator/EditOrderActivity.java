@@ -30,7 +30,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditOrderActivity extends AppCompatActivity {
+public class EditOrderActivity extends BaseActivity {
 
     Spinner waiterSpinner, cookSpinner, orderStatusSpinner, tableNumberSpinner;
     Button editOrder;

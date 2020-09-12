@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AddDishToOrder extends AppCompatActivity implements Validator.ValidationListener {
+public class AddDishToOrder extends BaseActivity implements Validator.ValidationListener {
 
     Spinner dishTypeSpinner, dishSpinner;
     TextView dishPrice, dishTotalPrice, possibleDishes;

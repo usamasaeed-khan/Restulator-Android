@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EditDishActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class EditDishActivity extends BaseActivity implements Validator.ValidationListener {
     TextView dishType, dish, dishPrice, dishTotalPrice,possibleDishes;
 
     @NotEmpty

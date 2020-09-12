@@ -33,13 +33,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
-public class UnpaidOrderDetail extends AppCompatActivity{
+public class UnpaidOrderDetail extends BaseActivity{
     UnpaidOrder unpaidOrder;
-    TextView customerTextView, orderIdTextview, orderDateTextview, cookNameTextView, waiterNameTextview, completeTimeTextView, orderStatusTextview, billTextview;
+    TextView customerTextView, orderIdTextview, orderDateTextview, cookNameTextView,
+            waiterNameTextview, completeTimeTextView, orderStatusTextview, billTextview;
     int OrderId;
     Button addDish, editOrder;
     RestulatorAPI apiInterface;
-
 
 
     @Override
@@ -54,27 +54,8 @@ public class UnpaidOrderDetail extends AppCompatActivity{
         completeTimeTextView = findViewById(R.id.CompleteTimeData);
         orderStatusTextview = findViewById(R.id.OrderStatusData);
         billTextview = findViewById(R.id.BillData);
-//        addDish = findViewById(R.id.addDishes);
         editOrder = findViewById(R.id.editButton);
 
-//        addDish.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intentFromUnpaidOrders = getIntent();
-//                if(intentFromUnpaidOrders.getExtras() != null){
-//                    unpaidOrder = (UnpaidOrder) intentFromUnpaidOrders.getSerializableExtra("UnpaidOrder");
-//                    int order_id = unpaidOrder.getId();
-//
-//                    Intent intent = new Intent(UnpaidOrderDetail.this, AddDishToOrder.class);
-//                    intent.putExtra("order_id", order_id);
-//
-//                    startActivity(intent);
-//                }
-//                else{
-//                    Toast.makeText(getApplicationContext(), "Order Details Not Found" ,Toast.LENGTH_LONG).show();
-//                }
-//            }
-//     });
 
         editOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,7 +152,7 @@ public class UnpaidOrderDetail extends AppCompatActivity{
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        deleteOrderAPI();
+                        deleteOrderAPICall();
 
                     }
                 });
@@ -181,7 +162,7 @@ public class UnpaidOrderDetail extends AppCompatActivity{
         builderSingle.show();
 
     }
-    public void deleteOrderAPI(){
+    public void deleteOrderAPICall(){
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);

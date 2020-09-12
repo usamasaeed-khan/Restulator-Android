@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     // Retrofit Instance object declaration.
     RestulatorAPI apiInterface;
@@ -89,37 +89,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-        return true;
-    }
-
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.logout:
-                Toast.makeText(getApplicationContext(), "Signing Off", Toast.LENGTH_LONG).show();
-
-                // Deleting all shared preferences data for the current user to logout.
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.apply();
-
-
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
-                return true;
-            case R.id.unpaid_orders:
-                startActivity(new Intent(this, UnpaidOrders.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
 
 }

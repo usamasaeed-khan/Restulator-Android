@@ -22,7 +22,7 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
 
-public class OrderDishesActivity extends AppCompatActivity {
+public class OrderDishesActivity extends BaseActivity {
 PaymentOrder[] paymentOrders;
 RestulatorAPI apiInterface;
 RecyclerView orderDishesRecyclerView;

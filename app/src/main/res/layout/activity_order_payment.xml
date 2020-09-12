@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:id="@+id/TaxLabel"
-            android:text="Tax:"
+            android:text="@string/tax_label"
             />
         <TextView
             android:layout_width="match_parent"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:id="@+id/BillLabel"
-            android:text="Bill:"
+            android:text="@string/bill_amt_label"
             />
         <TextView
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:id="@+id/PaymentLabel"
-            android:text="Payment:"
+            android:text="@string/payment_amt"
             />
         <EditText
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:id="@+id/ChangeLabel"
-            android:text="Change:"
+            android:text="@string/change_amt"
             />
         <TextView
             android:layout_width="match_parent"
@@ -129,7 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ic_round_submit_button"
-            android:text="Make Payment"
+            android:text="@string/payment_btn"
             android:onClick="makePayment"
             android:textColor="@color/textBackgroundColor"
             android:textSize="12dp"

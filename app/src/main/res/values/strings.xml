@@ -13,6 +13,12 @@
     <string name="deleteAlertMessage">Are you sure you want to delete this order?</string>
     <string name="edit_order">Edit Order</string>
     <string name="add_dish">Add Dish</string>
+    <string name="bill_total">TOTAL BILL</string>
+    <string name="bill_amt_label">Bill:</string>
+    <string name="payment_amt">Payment:</string>
+    <string name="change_amt">Change:</string>
+    <string name="payment_btn">Make Payment</string>
+    <string name="tax_label">Tax:</string>
 
     <string-array name="spinnerItems">
         <item>pending</item>

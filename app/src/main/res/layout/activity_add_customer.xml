@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/go_to_forgot_password"
-        android:textSize = "15sp"
+        android:textSize = "16sp"
         android:textStyle="bold"
         android:layout_marginHorizontal="40dp"
         android:text="Optional"/>

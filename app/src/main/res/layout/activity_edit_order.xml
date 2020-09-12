@@ -19,7 +19,7 @@
             android:paddingLeft="20dp"
             android:text="Select Order Status"
             android:inputType="textPersonName"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
 
         <Spinner
@@ -41,7 +41,7 @@
             android:paddingLeft="20dp"
             android:text="Select Waiter"
             android:inputType="textPersonName"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <Spinner
             android:id="@+id/waiterSpinner"
@@ -62,7 +62,7 @@
             android:layout_below="@id/waiterName"
             android:text="Select Cook"
             android:inputType="textPersonName"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <Spinner
             android:id="@+id/cookSpinner"
@@ -83,7 +83,7 @@
             android:layout_below="@id/cookName"
             android:text="Select Table"
             android:inputType="textPersonName"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <Spinner
             android:id="@+id/tableNumberSpinner"
@@ -105,7 +105,7 @@
             android:background="#add8e6"
             android:text="@string/edit_order"
             android:textColor="#FFFFFF"
-            android:textSize="22sp"
+            android:textSize="16sp"
             />
 
     </RelativeLayout>

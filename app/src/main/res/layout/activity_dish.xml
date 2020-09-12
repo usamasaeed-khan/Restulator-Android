@@ -20,7 +20,7 @@
                 android:paddingLeft="20dp"
                 android:text="Select Dish Type"
                 android:inputType="textPersonName"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <Spinner
                 android:id="@+id/dishTypeSpinner"
@@ -40,7 +40,7 @@
                 android:layout_below="@id/dishType"
                 android:text="Select Dish"
                 android:inputType="textPersonName"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
 
             <Spinner
@@ -63,7 +63,7 @@
                 android:layout_marginTop="50dp"
                 android:text="Enter Quantity"
                 android:inputType="textPersonName"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
 
             <EditText
@@ -75,7 +75,7 @@
                 android:layout_marginTop="40dp"
                 android:layout_toRightOf="@id/quantity"
                 android:inputType="number"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/maxDishes"
@@ -108,7 +108,7 @@
                 android:paddingLeft="20dp"
                 android:layout_below="@+id/approxDishes"
                 android:text="Price:"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 />
 
             <TextView
@@ -120,7 +120,7 @@
                 android:ems="10"
                 android:layout_toRightOf="@id/Price"
                 android:layout_below="@id/approxDishes"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 />
 
 
@@ -133,7 +133,7 @@
                 android:paddingLeft="20dp"
                 android:layout_below="@id/Price"
                 android:text="Total Price:"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 />
 
             <TextView
@@ -145,7 +145,7 @@
                 android:ems="10"
                 android:layout_toRightOf="@id/totalPrice"
                 android:layout_below="@id/Price"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 />
 
 
@@ -159,7 +159,7 @@
                 android:background="#add8e6"
                 android:text="Add This Dish To Order"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 />
 
 
@@ -173,7 +173,7 @@
                 android:background="#add8e6"
                 android:text="@string/add_order"
                 android:textColor="#FFFFFF"
-                android:textSize="22sp"
+                android:textSize="16sp"
                 />
 
         </RelativeLayout>

@@ -50,7 +50,9 @@ public interface RestulatorAPI {
     );
 
     @POST("customer/")
-    Call<ApiResponse<MySqlResult>> addCustomerToDb(@Body Customer customer, @Header("authorization") String authorization);
+    Call<ApiResponse<MySqlResult>> addCustomerToDb(
+            @Body Customer customer,
+            @Header("authorization") String authorization);
 
     @GET("nonPaid/payment-order/{orderId}")
     Call<ApiResponse<PaymentOrder>> getOrderPayments(

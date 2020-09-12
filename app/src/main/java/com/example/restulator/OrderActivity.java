@@ -44,7 +44,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class OrderActivity extends AppCompatActivity implements Validator.ValidationListener {
+public class OrderActivity extends BaseActivity implements Validator.ValidationListener {
 
     Spinner waiterSpinner, cookSpinner, customerSpinner, orderStatusSpinner;
     RestulatorAPI apiInterface;

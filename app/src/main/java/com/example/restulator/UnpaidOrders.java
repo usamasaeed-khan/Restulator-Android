@@ -1,6 +1,7 @@
 package com.example.restulator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,9 +9,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,18 +25,17 @@ import com.example.restulator.Models.ApiResponse;
 import com.example.restulator.Models.UnpaidOrder;
 import com.example.restulator.Models.Waiter;
 
-public class UnpaidOrders extends AppCompatActivity {
+public class UnpaidOrders extends BaseActivity {
     RestulatorAPI apiInterface;
     RelativeLayout progressBar;
     RecyclerView recyclerView;
     UnpaidOrder[] orders;
     UnpaidOrdersScreenAdapter unpaidOrdersScreenAdapter;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unpaid_orders);
-
         progressBar = findViewById(R.id.progress_bar);
         recyclerView = findViewById(R.id.recyclerview_unpaidOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,11 +63,8 @@ public class UnpaidOrders extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.INVISIBLE);
 
-//                SharedPreferences pref = getApplicationContext().getSharedPreferences("SharedData", 0);
-//                SharedPreferences.Editor editor = pref.edit();
-//                editor.clear();
-//                editor.apply();
             }
         });
     }
+
 }
