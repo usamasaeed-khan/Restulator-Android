@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".OrderPayment">
+    tools:context=".ActiveOrder">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,16 +18,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:id="@+id/TotalPriceLabel"
-            android:text="Total Price:"
+            android:id="@+id/OrderIdLabel"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Order Id:"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textSize="16sp"
+            android:fontFamily="sans-serif-smallcaps"
             android:textStyle="bold"
-            android:id="@+id/TotalPriceData"
+            android:id="@+id/OrderId"
             />
 
     </LinearLayout>
@@ -41,16 +43,110 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:id="@+id/TaxLabel"
-            android:text="@string/tax_label"
+            android:fontFamily="sans-serif-smallcaps"
+            android:id="@+id/CustomerNameLabel"
+            android:text="Customer:"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:id="@+id/CustomerName"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:id="@+id/CookNameLabel"
+            android:text="Cook:"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:id="@+id/CookName"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:id="@+id/OrderDateLabel"
+            android:text="Order At:"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:id="@+id/OrderDate"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:id="@+id/CompleteTimeLabel"
+            android:text="Remaining Time:"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:fontFamily="sans-serif-smallcaps"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:id="@+id/CompleteTime"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:id="@+id/OrderStatusLabel"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Order Status:"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textSize="16sp"
+            android:fontFamily="sans-serif-smallcaps"
             android:textStyle="bold"
-            android:id="@+id/TaxData"
+            android:id="@+id/OrderStatus"
             />
     </LinearLayout>
     <LinearLayout
@@ -62,7 +158,8 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:id="@+id/BillLabel"
-            android:text="@string/bill_amt_label"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Total Bill:"
             />
         <TextView
             android:layout_width="match_parent"
@@ -70,86 +167,33 @@
             android:gravity="end"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:id="@+id/BillData"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:id="@+id/PaymentLabel"
-            android:text="@string/payment_amt"
-            />
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="16sp"
-            android:inputType="numberDecimal"
-            android:textStyle="bold"
-            android:id="@+id/PaymentBox"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:id="@+id/ChangeLabel"
-            android:text="@string/change_amt"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:longClickable="false"
-            android:focusable="false"
-            android:cursorVisible="false"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:id="@+id/ChangeData"
+            android:fontFamily="sans-serif-smallcaps"
+            android:id="@+id/Bill"
             />
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:foregroundGravity="center"
         android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
         android:gravity="center"
         >
-
-        <Button
-            android:id="@+id/AddPaymentButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_round_submit_button"
-            android:text="@string/payment_btn"
-            android:onClick="makePayment"
-            android:textColor="@color/textBackgroundColor"
-            android:textSize="12dp"
-            android:textStyle="bold" />
+        
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/ic_round_button"
-            android:text="Add Review"
-            android:id="@+id/ReviewAddButton"
-            android:onClick="addReview"
-            android:layout_marginLeft="30dp"
-            android:layout_toRightOf="@+id/AddPaymentButton"
+            android:text="Add Payment"
+            android:id="@+id/paymentButton"
+            android:visibility="invisible"
+            android:fontFamily="sans-serif-smallcaps"
             android:textColor="@color/textBackgroundColor"
             android:textStyle="bold"
             android:textSize="12dp"/>
+
 
     </RelativeLayout>
 

@@ -11,6 +11,7 @@ import com.example.restulator.Models.EditDish;
 import com.example.restulator.Models.EditOrder;
 import com.example.restulator.Models.MySqlResult;
 import com.example.restulator.Models.Order;
+import com.example.restulator.Models.OrderOnTable;
 import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
 import com.example.restulator.Models.PossibleDishes;
@@ -44,6 +45,12 @@ public interface RestulatorAPI {
             @Header("authorization") String authorization
     );
 
+    @GET("tables/order/{tableId}")
+    Call<ApiResponse<OrderOnTable>> getOrder(
+            @Path("tableId") Integer tableId,
+            @Header("authorization") String authorization
+    );
+
     @GET("nonPaid/")
     Call<ApiResponse<UnpaidOrder>> getNonPaidOrders(
             @Header("authorization") String authorization
@@ -59,7 +66,7 @@ public interface RestulatorAPI {
             @Path("orderId") Integer orderId,
             @Header("authorization") String authorization);
 
-    @PUT("nonPaid/payment-order/payment/{orderId}")
+    @POST("nonPaid/payment-order/payment/{orderId}")
     Call<ApiResponse<MySqlResult>> updatePayment(
             @Path("orderId") Integer orderId,
             @Body PaymentUpdate paymentUpdate,

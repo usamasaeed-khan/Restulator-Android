@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import com.example.restulator.Models.PaymentOrder;
 import com.example.restulator.Models.PaymentUpdate;
 import com.example.restulator.Models.Review;
 import com.example.restulator.Models.UnpaidOrder;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -119,6 +121,7 @@ public class OrderPayment extends BaseActivity implements Validator.ValidationLi
     EditText paymentEdittext;
 
     PaymentUpdate paymentUpdate;
+
     Integer orderId;
 
     @Override
@@ -151,9 +154,10 @@ public class OrderPayment extends BaseActivity implements Validator.ValidationLi
             public void onResponse(Call<ApiResponse<PaymentOrder>> call, Response<ApiResponse<PaymentOrder>> response) {
                 if(response.body() != null ? response.body().getStatus() : false){
                     paymentOrders = response.body().getData();
-                    totalPriceTextview.setText(String.valueOf(paymentOrders[0].getPrice()));
+                    totalPriceTextview.setText(String.valueOf(paymentOrders[0].getTotal_amount()));
                     taxTextview.setText(String.valueOf(paymentOrders[0].getTax()));
                     billTextview.setText(String.valueOf(paymentOrders[0].getBill()));
+                    
 
                     paymentEdittext.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -163,25 +167,24 @@ public class OrderPayment extends BaseActivity implements Validator.ValidationLi
 
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            if(!String.valueOf(s).matches("")){
-                                float payment = Float.parseFloat(String.valueOf(s));
-                                paymentUpdate = new PaymentUpdate(payment);
-                                if(paymentOrders[0].getBill() - payment > 0){
-                                    changeTextview.setText(String.valueOf(paymentOrders[0].getBill() - payment));
-                                }
-                                else{
-                                    changeTextview.setText(String.valueOf(0));
-                                }
-                            }
-                            else{
-                                changeTextview.setText(String.valueOf(0));
 
-                            }
                         }
 
                         @Override
                         public void afterTextChanged(Editable s) {
-
+                            if(!String.valueOf(s).matches("")){
+                                float payment = Float.parseFloat(String.valueOf(s));
+                                paymentUpdate = new PaymentUpdate(payment);
+                                if(payment - paymentOrders[0].getBill() > 0){
+                                    changeTextview.setText(String.valueOf(payment - paymentOrders[0].getBill()));
+                                }
+//                                else{
+//                                    paymentEdittext.setError("Enter greater amount");
+//                                }
+                            }
+                            else{
+                                changeTextview.setText(String.valueOf(0));
+                            }
 
                         }
                     });
@@ -213,27 +216,36 @@ public class OrderPayment extends BaseActivity implements Validator.ValidationLi
 
         apiInterface = RetrofitInstance.getRetrofitInstance().create(RestulatorAPI.class);
 
+        if(paymentUpdate.getPayment() >= paymentOrders[0].getBill()){
+            Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
+            paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
+                @Override
+                public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
+                    if(response.body() != null ? response.body().getStatus() : false){
+                        Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
+                        startActivity(intent);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Payment Unsuccessful",Toast.LENGTH_LONG).show();
 
-        Call<ApiResponse<MySqlResult>> paymentCall = apiInterface.updatePayment(orderId,paymentUpdate,accessToken);
-        paymentCall.enqueue(new Callback<ApiResponse<MySqlResult>>() {
-            @Override
-            public void onResponse(Call<ApiResponse<MySqlResult>> call, Response<ApiResponse<MySqlResult>> response) {
-                if(response.body() != null ? response.body().getStatus() : false){
-                    Toast.makeText(getApplicationContext(), "Payment Successful!",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), UnpaidOrders.class);
-                    startActivity(intent);
+                    }
                 }
-                else{
-                    Toast.makeText(getApplicationContext(), "Payment Unsuccessful",Toast.LENGTH_LONG).show();
 
+                @Override
+                public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
                 }
-            }
+            });
+        }
+        else{
+            paymentEdittext.setError("Insufficient payment! ");
+        }
 
-            @Override
-            public void onFailure(Call<ApiResponse<MySqlResult>> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
+
+
+
+
 
     }
 

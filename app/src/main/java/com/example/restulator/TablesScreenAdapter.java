@@ -70,10 +70,22 @@ public class TablesScreenAdapter extends RecyclerView.Adapter<TablesScreenAdapte
                 Toast.makeText(context, "Table No: " + table.getId(),Toast.LENGTH_LONG).show();
                 Toast.makeText(context, "Status: " + table.getStatus(),Toast.LENGTH_LONG).show();
 
-                Intent intent = new Intent(context, OrderActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("table_id", table.getId());
-                context.startActivity(intent);
+
+                if(table.getStatus().equals("active")){
+                    Intent intentActiveOrder = new Intent(context, ActiveOrder.class);
+                    intentActiveOrder.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentActiveOrder.putExtra("table_id", table.getId());
+                    context.startActivity(intentActiveOrder);
+
+                }
+                else{
+                    Intent intent = new Intent(context, OrderActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("table_id", table.getId());
+                    context.startActivity(intent);
+
+                }
+
             }
         });
 

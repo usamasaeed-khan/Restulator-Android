@@ -11,9 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".OrderDishesActivity"></activity>
+        <activity android:name=".ActiveOrder"></activity>
+        <activity android:name=".OrderDishesActivity" />
         <activity android:name=".AddCustomerActivity" />
-        <activity android:name=".EditDishActivity"/>
+        <activity android:name=".EditDishActivity" />
         <activity android:name=".OrderPayment" />
         <activity android:name=".UnpaidOrderDetail" />
         <activity android:name=".UnpaidOrders" />
